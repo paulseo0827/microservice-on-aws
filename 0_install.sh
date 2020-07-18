@@ -1,4 +1,4 @@
-sudo yum update; 
+sudo yum update;
 
 # install kubectl
 sudo curl --silent --location -o /usr/local/bin/kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.15.10/2020-02-22/bin/linux/amd64/kubectl
@@ -20,7 +20,7 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 . ~/.nvm/nvm.sh
 nvm install node
 
-# install aws cdk 
+# install aws cdk
 npm install -g aws-cdk
 
 # install glooctl
