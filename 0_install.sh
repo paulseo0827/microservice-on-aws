@@ -27,10 +27,6 @@ npm install -g aws-cdk
 curl -sL https://run.solo.io/gloo/install | sh
 sudo cp ~/.gloo/bin/glooctl /usr/local/bin
 
-# codecommit
-git config --global credential.helper '!aws codecommit credential-helper $@'
-git config --global credential.Usehttppath true
-
 # check
 echo "##### kubectl version check #####"
 kubectl version --short
