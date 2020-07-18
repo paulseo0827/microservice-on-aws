@@ -1,0 +1,5661 @@
+{
+  "Resources": {
+    "microservicevpcC539ABC0": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "MicroserviceCdkStack/microservice-vpc"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/Resource"
+      }
+    },
+    "microservicevpcPublicSubnet1Subnet97A7A9BD": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/18",
+        "VpcId": {
+          "Ref": "microservicevpcC539ABC0"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "kubernetes.io/role/elb",
+            "Value": "1"
+          },
+          {
+            "Key": "Name",
+            "Value": "MicroserviceCdkStack/microservice-vpc/PublicSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/PublicSubnet1/Subnet"
+      }
+    },
+    "microservicevpcPublicSubnet1RouteTable11D2AAA2": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "microservicevpcC539ABC0"
+        },
+        "Tags": [
+          {
+            "Key": "kubernetes.io/role/elb",
+            "Value": "1"
+          },
+          {
+            "Key": "Name",
+            "Value": "MicroserviceCdkStack/microservice-vpc/PublicSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/PublicSubnet1/RouteTable"
+      }
+    },
+    "microservicevpcPublicSubnet1RouteTableAssociationAC68D6DE": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "microservicevpcPublicSubnet1RouteTable11D2AAA2"
+        },
+        "SubnetId": {
+          "Ref": "microservicevpcPublicSubnet1Subnet97A7A9BD"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/PublicSubnet1/RouteTableAssociation"
+      }
+    },
+    "microservicevpcPublicSubnet1DefaultRoute3F2D5A5C": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "microservicevpcPublicSubnet1RouteTable11D2AAA2"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "microservicevpcIGWD7BADA25"
+        }
+      },
+      "DependsOn": [
+        "microservicevpcVPCGW76B4B741"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/PublicSubnet1/DefaultRoute"
+      }
+    },
+    "microservicevpcPublicSubnet1EIPF6534711": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "kubernetes.io/role/elb",
+            "Value": "1"
+          },
+          {
+            "Key": "Name",
+            "Value": "MicroserviceCdkStack/microservice-vpc/PublicSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/PublicSubnet1/EIP"
+      }
+    },
+    "microservicevpcPublicSubnet1NATGatewayD655674C": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "microservicevpcPublicSubnet1EIPF6534711",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
+          "Ref": "microservicevpcPublicSubnet1Subnet97A7A9BD"
+        },
+        "Tags": [
+          {
+            "Key": "kubernetes.io/role/elb",
+            "Value": "1"
+          },
+          {
+            "Key": "Name",
+            "Value": "MicroserviceCdkStack/microservice-vpc/PublicSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/PublicSubnet1/NATGateway"
+      }
+    },
+    "microservicevpcPublicSubnet2Subnet8D06FBE5": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.64.0/18",
+        "VpcId": {
+          "Ref": "microservicevpcC539ABC0"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "kubernetes.io/role/elb",
+            "Value": "1"
+          },
+          {
+            "Key": "Name",
+            "Value": "MicroserviceCdkStack/microservice-vpc/PublicSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/PublicSubnet2/Subnet"
+      }
+    },
+    "microservicevpcPublicSubnet2RouteTable1F36F3CA": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "microservicevpcC539ABC0"
+        },
+        "Tags": [
+          {
+            "Key": "kubernetes.io/role/elb",
+            "Value": "1"
+          },
+          {
+            "Key": "Name",
+            "Value": "MicroserviceCdkStack/microservice-vpc/PublicSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/PublicSubnet2/RouteTable"
+      }
+    },
+    "microservicevpcPublicSubnet2RouteTableAssociationBC85822A": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "microservicevpcPublicSubnet2RouteTable1F36F3CA"
+        },
+        "SubnetId": {
+          "Ref": "microservicevpcPublicSubnet2Subnet8D06FBE5"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/PublicSubnet2/RouteTableAssociation"
+      }
+    },
+    "microservicevpcPublicSubnet2DefaultRoute1C60C54C": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "microservicevpcPublicSubnet2RouteTable1F36F3CA"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "microservicevpcIGWD7BADA25"
+        }
+      },
+      "DependsOn": [
+        "microservicevpcVPCGW76B4B741"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/PublicSubnet2/DefaultRoute"
+      }
+    },
+    "microservicevpcPrivateSubnet1SubnetD9CFF804": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.128.0/18",
+        "VpcId": {
+          "Ref": "microservicevpcC539ABC0"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "kubernetes.io/role/internal-elb",
+            "Value": "1"
+          },
+          {
+            "Key": "Name",
+            "Value": "MicroserviceCdkStack/microservice-vpc/PrivateSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/PrivateSubnet1/Subnet"
+      }
+    },
+    "microservicevpcPrivateSubnet1RouteTable269D0574": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "microservicevpcC539ABC0"
+        },
+        "Tags": [
+          {
+            "Key": "kubernetes.io/role/internal-elb",
+            "Value": "1"
+          },
+          {
+            "Key": "Name",
+            "Value": "MicroserviceCdkStack/microservice-vpc/PrivateSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/PrivateSubnet1/RouteTable"
+      }
+    },
+    "microservicevpcPrivateSubnet1RouteTableAssociationB1114D79": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "microservicevpcPrivateSubnet1RouteTable269D0574"
+        },
+        "SubnetId": {
+          "Ref": "microservicevpcPrivateSubnet1SubnetD9CFF804"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/PrivateSubnet1/RouteTableAssociation"
+      }
+    },
+    "microservicevpcPrivateSubnet1DefaultRouteBCDDC81F": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "microservicevpcPrivateSubnet1RouteTable269D0574"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "microservicevpcPublicSubnet1NATGatewayD655674C"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/PrivateSubnet1/DefaultRoute"
+      }
+    },
+    "microservicevpcPrivateSubnet2SubnetF1860867": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.192.0/18",
+        "VpcId": {
+          "Ref": "microservicevpcC539ABC0"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "kubernetes.io/role/internal-elb",
+            "Value": "1"
+          },
+          {
+            "Key": "Name",
+            "Value": "MicroserviceCdkStack/microservice-vpc/PrivateSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/PrivateSubnet2/Subnet"
+      }
+    },
+    "microservicevpcPrivateSubnet2RouteTableC110C0A4": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "microservicevpcC539ABC0"
+        },
+        "Tags": [
+          {
+            "Key": "kubernetes.io/role/internal-elb",
+            "Value": "1"
+          },
+          {
+            "Key": "Name",
+            "Value": "MicroserviceCdkStack/microservice-vpc/PrivateSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/PrivateSubnet2/RouteTable"
+      }
+    },
+    "microservicevpcPrivateSubnet2RouteTableAssociation89918C51": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "microservicevpcPrivateSubnet2RouteTableC110C0A4"
+        },
+        "SubnetId": {
+          "Ref": "microservicevpcPrivateSubnet2SubnetF1860867"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/PrivateSubnet2/RouteTableAssociation"
+      }
+    },
+    "microservicevpcPrivateSubnet2DefaultRoute7BFDC9F7": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "microservicevpcPrivateSubnet2RouteTableC110C0A4"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "microservicevpcPublicSubnet1NATGatewayD655674C"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/PrivateSubnet2/DefaultRoute"
+      }
+    },
+    "microservicevpcIGWD7BADA25": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "MicroserviceCdkStack/microservice-vpc"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/IGW"
+      }
+    },
+    "microservicevpcVPCGW76B4B741": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": {
+          "Ref": "microservicevpcC539ABC0"
+        },
+        "InternetGatewayId": {
+          "Ref": "microservicevpcIGWD7BADA25"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microservice-vpc/VPCGW"
+      }
+    },
+    "AdminRole38563C57": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/AdminRole/Resource"
+      }
+    },
+    "microserviceEksClusterRoleEFE3C74D": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "eks.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/AmazonEKSClusterPolicy"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microserviceEksCluster/Role/Resource"
+      }
+    },
+    "microserviceEksClusterControlPlaneSecurityGroupB2EA6ED7": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "EKS Control Plane Security Group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "microservicevpcC539ABC0"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microserviceEksCluster/ControlPlaneSecurityGroup/Resource"
+      }
+    },
+    "microserviceEksClusterControlPlaneSecurityGroupfromMicroserviceCdkStackmicroserviceEksClustermicroserviceng1InstanceSecurityGroupA0FDFD074436EA10895": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "IpProtocol": "tcp",
+        "Description": "from MicroserviceCdkStackmicroserviceEksClustermicroserviceng1InstanceSecurityGroupA0FDFD07:443",
+        "FromPort": 443,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "microserviceEksClusterControlPlaneSecurityGroupB2EA6ED7",
+            "GroupId"
+          ]
+        },
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "microserviceEksClustermicroserviceng1InstanceSecurityGroupD8EA74EB",
+            "GroupId"
+          ]
+        },
+        "ToPort": 443
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microserviceEksCluster/ControlPlaneSecurityGroup/from MicroserviceCdkStackmicroserviceEksClustermicroserviceng1InstanceSecurityGroupA0FDFD07:443"
+      }
+    },
+    "microserviceEksClusterCreationRoleDA6F567E": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": [
+                  {
+                    "Fn::GetAtt": [
+                      "awscdkawseksClusterResourceProviderNestedStackawscdkawseksClusterResourceProviderNestedStackResource9827C454",
+                      "Outputs.MicroserviceCdkStackawscdkawseksClusterResourceProviderOnEventHandlerServiceRoleFB65AD13Arn"
+                    ]
+                  },
+                  {
+                    "Fn::GetAtt": [
+                      "awscdkawseksClusterResourceProviderNestedStackawscdkawseksClusterResourceProviderNestedStackResource9827C454",
+                      "Outputs.MicroserviceCdkStackawscdkawseksClusterResourceProviderIsCompleteHandlerServiceRole9D7DB34AArn"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "awscdkawseksKubectlProviderNestedStackawscdkawseksKubectlProviderNestedStackResourceA7AEBA6B",
+                    "Outputs.MicroserviceCdkStackawscdkawseksKubectlProviderHandlerServiceRole47B073FDArn"
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microserviceEksCluster/Resource/CreationRole/Resource"
+      }
+    },
+    "microserviceEksClusterCreationRoleDefaultPolicy214F9963": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "iam:PassRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "microserviceEksClusterRoleEFE3C74D",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "ec2:DescribeSubnets",
+                "ec2:DescribeRouteTables"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "eks:CreateCluster",
+                "eks:DescribeCluster",
+                "eks:DescribeUpdate",
+                "eks:DeleteCluster",
+                "eks:UpdateClusterVersion",
+                "eks:UpdateClusterConfig",
+                "eks:CreateFargateProfile",
+                "eks:TagResource",
+                "eks:UntagResource"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":eks:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":cluster/microservice"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":eks:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":cluster/microservice/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "eks:DescribeFargateProfile",
+                "eks:DeleteFargateProfile"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":eks:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":fargateprofile/microservice/*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "iam:GetRole",
+                "iam:listAttachedRolePolicies"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": "iam:CreateServiceLinkedRole",
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "microserviceEksClusterCreationRoleDefaultPolicy214F9963",
+        "Roles": [
+          {
+            "Ref": "microserviceEksClusterCreationRoleDA6F567E"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microserviceEksCluster/Resource/CreationRole/DefaultPolicy/Resource"
+      }
+    },
+    "microserviceEksCluster5A133332": {
+      "Type": "Custom::AWSCDK-EKS-Cluster",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "awscdkawseksClusterResourceProviderNestedStackawscdkawseksClusterResourceProviderNestedStackResource9827C454",
+            "Outputs.MicroserviceCdkStackawscdkawseksClusterResourceProviderframeworkonEvent79E70E88Arn"
+          ]
+        },
+        "Config": {
+          "name": "microservice",
+          "roleArn": {
+            "Fn::GetAtt": [
+              "microserviceEksClusterRoleEFE3C74D",
+              "Arn"
+            ]
+          },
+          "version": "1.14",
+          "resourcesVpcConfig": {
+            "securityGroupIds": [
+              {
+                "Fn::GetAtt": [
+                  "microserviceEksClusterControlPlaneSecurityGroupB2EA6ED7",
+                  "GroupId"
+                ]
+              }
+            ],
+            "subnetIds": [
+              {
+                "Ref": "microservicevpcPublicSubnet1Subnet97A7A9BD"
+              },
+              {
+                "Ref": "microservicevpcPublicSubnet2Subnet8D06FBE5"
+              },
+              {
+                "Ref": "microservicevpcPrivateSubnet1SubnetD9CFF804"
+              },
+              {
+                "Ref": "microservicevpcPrivateSubnet2SubnetF1860867"
+              }
+            ]
+          }
+        },
+        "AssumeRoleArn": {
+          "Fn::GetAtt": [
+            "microserviceEksClusterCreationRoleDA6F567E",
+            "Arn"
+          ]
+        },
+        "AttributesRevision": 2
+      },
+      "DependsOn": [
+        "microserviceEksClusterCreationRoleDefaultPolicy214F9963",
+        "microserviceEksClusterCreationRoleDA6F567E"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microserviceEksCluster/Resource/Resource/Default"
+      }
+    },
+    "microserviceEksClusterKubectlReadyBarrierCC179617": {
+      "Type": "AWS::SSM::Parameter",
+      "Properties": {
+        "Type": "String",
+        "Value": "aws:cdk:eks:kubectl-ready"
+      },
+      "DependsOn": [
+        "microserviceEksClusterCreationRoleDefaultPolicy214F9963",
+        "microserviceEksClusterCreationRoleDA6F567E",
+        "microserviceEksCluster5A133332"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microserviceEksCluster/KubectlReadyBarrier"
+      }
+    },
+    "microserviceEksClusterAwsAuthmanifest35D047B5": {
+      "Type": "Custom::AWSCDK-EKS-KubernetesResource",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "awscdkawseksKubectlProviderNestedStackawscdkawseksKubectlProviderNestedStackResourceA7AEBA6B",
+            "Outputs.MicroserviceCdkStackawscdkawseksKubectlProviderframeworkonEvent0437E38EArn"
+          ]
+        },
+        "Manifest": {
+          "Fn::Join": [
+            "",
+            [
+              "[{\"apiVersion\":\"v1\",\"kind\":\"ConfigMap\",\"metadata\":{\"name\":\"aws-auth\",\"namespace\":\"kube-system\"},\"data\":{\"mapRoles\":\"[{\\\"rolearn\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "AdminRole38563C57",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"username\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "AdminRole38563C57",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"groups\\\":[\\\"system:masters\\\"]},{\\\"rolearn\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "microserviceEksClustermicroserviceng1InstanceRole91113E13",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"username\\\":\\\"system:node:{{EC2PrivateDNSName}}\\\",\\\"groups\\\":[\\\"system:bootstrappers\\\",\\\"system:nodes\\\"]},{\\\"rolearn\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "adserviceCodebuildProjectRoleD41BD584",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"username\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "adserviceCodebuildProjectRoleD41BD584",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"groups\\\":[\\\"system:masters\\\"]},{\\\"rolearn\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "cartserviceCodebuildProjectRoleAAAB16D5",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"username\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "cartserviceCodebuildProjectRoleAAAB16D5",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"groups\\\":[\\\"system:masters\\\"]},{\\\"rolearn\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "checkoutserviceCodebuildProjectRole0E7F0C17",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"username\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "checkoutserviceCodebuildProjectRole0E7F0C17",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"groups\\\":[\\\"system:masters\\\"]},{\\\"rolearn\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "currencyserviceCodebuildProjectRole4B116603",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"username\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "currencyserviceCodebuildProjectRole4B116603",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"groups\\\":[\\\"system:masters\\\"]},{\\\"rolearn\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "emailserviceCodebuildProjectRole0877E35B",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"username\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "emailserviceCodebuildProjectRole0877E35B",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"groups\\\":[\\\"system:masters\\\"]},{\\\"rolearn\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "frontendCodebuildProjectRole28B5B930",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"username\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "frontendCodebuildProjectRole28B5B930",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"groups\\\":[\\\"system:masters\\\"]},{\\\"rolearn\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "paymentserviceCodebuildProjectRoleB564D833",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"username\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "paymentserviceCodebuildProjectRoleB564D833",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"groups\\\":[\\\"system:masters\\\"]},{\\\"rolearn\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "productcatalogserviceCodebuildProjectRole2861B959",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"username\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "productcatalogserviceCodebuildProjectRole2861B959",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"groups\\\":[\\\"system:masters\\\"]},{\\\"rolearn\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "recommendationserviceCodebuildProjectRole1C492664",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"username\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "recommendationserviceCodebuildProjectRole1C492664",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"groups\\\":[\\\"system:masters\\\"]},{\\\"rolearn\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "shippingserviceCodebuildProjectRoleA150061F",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"username\\\":\\\"",
+              {
+                "Fn::GetAtt": [
+                  "shippingserviceCodebuildProjectRoleA150061F",
+                  "Arn"
+                ]
+              },
+              "\\\",\\\"groups\\\":[\\\"system:masters\\\"]}]\",\"mapUsers\":\"[]\",\"mapAccounts\":\"[]\"}}]"
+            ]
+          ]
+        },
+        "ClusterName": {
+          "Ref": "microserviceEksCluster5A133332"
+        },
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "microserviceEksClusterCreationRoleDA6F567E",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "microserviceEksClusterKubectlReadyBarrierCC179617"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microserviceEksCluster/AwsAuth/manifest/Resource/Default"
+      }
+    },
+    "microserviceEksClustermanifestnamespaceFAD5AFA9": {
+      "Type": "Custom::AWSCDK-EKS-KubernetesResource",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "awscdkawseksKubectlProviderNestedStackawscdkawseksKubectlProviderNestedStackResourceA7AEBA6B",
+            "Outputs.MicroserviceCdkStackawscdkawseksKubectlProviderframeworkonEvent0437E38EArn"
+          ]
+        },
+        "Manifest": "[{\"apiVersion\":\"v1\",\"kind\":\"Namespace\",\"metadata\":{\"name\":\"microservice\"}}]",
+        "ClusterName": {
+          "Ref": "microserviceEksCluster5A133332"
+        },
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "microserviceEksClusterCreationRoleDA6F567E",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "microserviceEksClusterKubectlReadyBarrierCC179617"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microserviceEksCluster/manifest-namespace/Resource/Default"
+      }
+    },
+    "microserviceEksClustermicroserviceng1InstanceSecurityGroupD8EA74EB": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "MicroserviceCdkStack/microserviceEksCluster/microservice-ng1/InstanceSecurityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "Tags": [
+          {
+            "Key": {
+              "Fn::Join": [
+                "",
+                [
+                  "kubernetes.io/cluster/",
+                  {
+                    "Ref": "microserviceEksCluster5A133332"
+                  }
+                ]
+              ]
+            },
+            "Value": "owned"
+          },
+          {
+            "Key": "Name",
+            "Value": "MicroserviceCdkStack/microserviceEksCluster/microservice-ng1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "microservicevpcC539ABC0"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microserviceEksCluster/microservice-ng1/InstanceSecurityGroup/Resource"
+      }
+    },
+    "microserviceEksClustermicroserviceng1InstanceSecurityGroupfromMicroserviceCdkStackmicroserviceEksClustermicroserviceng1InstanceSecurityGroupA0FDFD07ALLTRAFFIC1AAD8E66": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "IpProtocol": "-1",
+        "Description": "from MicroserviceCdkStackmicroserviceEksClustermicroserviceng1InstanceSecurityGroupA0FDFD07:ALL TRAFFIC",
+        "GroupId": {
+          "Fn::GetAtt": [
+            "microserviceEksClustermicroserviceng1InstanceSecurityGroupD8EA74EB",
+            "GroupId"
+          ]
+        },
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "microserviceEksClustermicroserviceng1InstanceSecurityGroupD8EA74EB",
+            "GroupId"
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microserviceEksCluster/microservice-ng1/InstanceSecurityGroup/from MicroserviceCdkStackmicroserviceEksClustermicroserviceng1InstanceSecurityGroupA0FDFD07:ALL TRAFFIC"
+      }
+    },
+    "microserviceEksClustermicroserviceng1InstanceSecurityGroupfromMicroserviceCdkStackmicroserviceEksClusterControlPlaneSecurityGroup3BA592FB443B3B6D3EC": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "IpProtocol": "tcp",
+        "Description": "from MicroserviceCdkStackmicroserviceEksClusterControlPlaneSecurityGroup3BA592FB:443",
+        "FromPort": 443,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "microserviceEksClustermicroserviceng1InstanceSecurityGroupD8EA74EB",
+            "GroupId"
+          ]
+        },
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "microserviceEksClusterControlPlaneSecurityGroupB2EA6ED7",
+            "GroupId"
+          ]
+        },
+        "ToPort": 443
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microserviceEksCluster/microservice-ng1/InstanceSecurityGroup/from MicroserviceCdkStackmicroserviceEksClusterControlPlaneSecurityGroup3BA592FB:443"
+      }
+    },
+    "microserviceEksClustermicroserviceng1InstanceSecurityGroupfromMicroserviceCdkStackmicroserviceEksClusterControlPlaneSecurityGroup3BA592FB102565535BFB34CC6": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "IpProtocol": "tcp",
+        "Description": "from MicroserviceCdkStackmicroserviceEksClusterControlPlaneSecurityGroup3BA592FB:1025-65535",
+        "FromPort": 1025,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "microserviceEksClustermicroserviceng1InstanceSecurityGroupD8EA74EB",
+            "GroupId"
+          ]
+        },
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "microserviceEksClusterControlPlaneSecurityGroupB2EA6ED7",
+            "GroupId"
+          ]
+        },
+        "ToPort": 65535
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microserviceEksCluster/microservice-ng1/InstanceSecurityGroup/from MicroserviceCdkStackmicroserviceEksClusterControlPlaneSecurityGroup3BA592FB:1025-65535"
+      }
+    },
+    "microserviceEksClustermicroserviceng1InstanceRole91113E13": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "ec2.",
+                      {
+                        "Ref": "AWS::URLSuffix"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/AmazonEKSWorkerNodePolicy"
+              ]
+            ]
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/AmazonEKS_CNI_Policy"
+              ]
+            ]
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+              ]
+            ]
+          }
+        ],
+        "Tags": [
+          {
+            "Key": {
+              "Fn::Join": [
+                "",
+                [
+                  "kubernetes.io/cluster/",
+                  {
+                    "Ref": "microserviceEksCluster5A133332"
+                  }
+                ]
+              ]
+            },
+            "Value": "owned"
+          },
+          {
+            "Key": "Name",
+            "Value": "MicroserviceCdkStack/microserviceEksCluster/microservice-ng1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microserviceEksCluster/microservice-ng1/InstanceRole/Resource"
+      }
+    },
+    "microserviceEksClustermicroserviceng1InstanceRoleDefaultPolicyAC5A4DE6": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "appmesh:*",
+                "servicediscovery:CreateService",
+                "servicediscovery:GetService",
+                "servicediscovery:RegisterInstance",
+                "servicediscovery:DeregisterInstance",
+                "servicediscovery:ListInstances",
+                "servicediscovery:ListNamespaces",
+                "servicediscovery:ListServices",
+                "route53:GetHealthCheck",
+                "route53:CreateHealthCheck",
+                "route53:UpdateHealthCheck",
+                "route53:ChangeResourceRecordSets",
+                "route53:DeleteHealthCheck"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "autoscaling:DescribeAutoScalingGroups",
+                "autoscaling:DescribeAutoScalingInstances",
+                "autoscaling:DescribeLaunchConfigurations",
+                "autoscaling:DescribeTags",
+                "autoscaling:SetDesiredCapacity",
+                "autoscaling:TerminateInstanceInAutoScalingGroup",
+                "ec2:DescribeLaunchTemplateVersions"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+                "xray:GetSamplingRules",
+                "xray:GetSamplingTargets",
+                "xray:GetSamplingStatisticSummaries"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "cloudwatch:PutMetricData",
+                "ec2:DescribeVolumes",
+                "ec2:DescribeTags",
+                "logs:PutLogEvents",
+                "logs:DescribeLogStreams",
+                "logs:DescribeLogGroups",
+                "logs:CreateLogStream",
+                "logs:CreateLogGroup"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": "ssm:GetParameter",
+              "Effect": "Allow",
+              "Resource": "arn:aws:ssm:*:*:parameter/AmazonCloudWatch-*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "microserviceEksClustermicroserviceng1InstanceRoleDefaultPolicyAC5A4DE6",
+        "Roles": [
+          {
+            "Ref": "microserviceEksClustermicroserviceng1InstanceRole91113E13"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microserviceEksCluster/microservice-ng1/InstanceRole/DefaultPolicy/Resource"
+      }
+    },
+    "microserviceEksClustermicroserviceng1InstanceProfile8D96F34B": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Roles": [
+          {
+            "Ref": "microserviceEksClustermicroserviceng1InstanceRole91113E13"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microserviceEksCluster/microservice-ng1/InstanceProfile"
+      }
+    },
+    "microserviceEksClustermicroserviceng1LaunchConfigEB9FB47F": {
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
+      "Properties": {
+        "ImageId": {
+          "Ref": "SsmParameterValueawsserviceeksoptimizedami114amazonlinux2recommendedimageidC96584B6F00A464EAD1953AFF4B05118Parameter"
+        },
+        "InstanceType": "m5.large",
+        "AssociatePublicIpAddress": false,
+        "IamInstanceProfile": {
+          "Ref": "microserviceEksClustermicroserviceng1InstanceProfile8D96F34B"
+        },
+        "SecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "microserviceEksClustermicroserviceng1InstanceSecurityGroupD8EA74EB",
+              "GroupId"
+            ]
+          }
+        ],
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "",
+              [
+                "#!/bin/bash\nset -o xtrace\n/etc/eks/bootstrap.sh ",
+                {
+                  "Ref": "microserviceEksCluster5A133332"
+                },
+                " --kubelet-extra-args \"--node-labels lifecycle=OnDemand\" --use-max-pods true\n/opt/aws/bin/cfn-signal --exit-code $? --stack MicroserviceCdkStack --resource microserviceEksClustermicroserviceng1ASGD6A8538C --region ",
+                {
+                  "Ref": "AWS::Region"
+                }
+              ]
+            ]
+          }
+        }
+      },
+      "DependsOn": [
+        "microserviceEksClustermicroserviceng1InstanceRoleDefaultPolicyAC5A4DE6",
+        "microserviceEksClustermicroserviceng1InstanceRole91113E13"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microserviceEksCluster/microservice-ng1/LaunchConfig"
+      }
+    },
+    "microserviceEksClustermicroserviceng1ASGD6A8538C": {
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "Properties": {
+        "MaxSize": "10",
+        "MinSize": "3",
+        "DesiredCapacity": "3",
+        "LaunchConfigurationName": {
+          "Ref": "microserviceEksClustermicroserviceng1LaunchConfigEB9FB47F"
+        },
+        "Tags": [
+          {
+            "Key": {
+              "Fn::Join": [
+                "",
+                [
+                  "kubernetes.io/cluster/",
+                  {
+                    "Ref": "microserviceEksCluster5A133332"
+                  }
+                ]
+              ]
+            },
+            "PropagateAtLaunch": true,
+            "Value": "owned"
+          },
+          {
+            "Key": "Name",
+            "PropagateAtLaunch": true,
+            "Value": "MicroserviceCdkStack/microserviceEksCluster/microservice-ng1"
+          }
+        ],
+        "VPCZoneIdentifier": [
+          {
+            "Ref": "microservicevpcPrivateSubnet1SubnetD9CFF804"
+          },
+          {
+            "Ref": "microservicevpcPrivateSubnet2SubnetF1860867"
+          }
+        ]
+      },
+      "UpdatePolicy": {
+        "AutoScalingRollingUpdate": {
+          "WaitOnResourceSignals": false,
+          "PauseTime": "PT0S",
+          "SuspendProcesses": [
+            "HealthCheck",
+            "ReplaceUnhealthy",
+            "AZRebalance",
+            "AlarmNotification",
+            "ScheduledActions"
+          ]
+        },
+        "AutoScalingScheduledAction": {
+          "IgnoreUnmodifiedGroupSizeProperties": true
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/microserviceEksCluster/microservice-ng1/ASG"
+      }
+    },
+    "awscdkawseksClusterResourceProviderNestedStackawscdkawseksClusterResourceProviderNestedStackResource9827C454": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "",
+            [
+              "https://s3.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix"
+              },
+              "/",
+              {
+                "Ref": "AssetParametersa3a94ed0273b96828da3a5bc3694cc96225be49ecd1386dd139c99c6fce45d9fS3BucketE9C1A5B1"
+              },
+              "/",
+              {
+                "Fn::Select": [
+                  0,
+                  {
+                    "Fn::Split": [
+                      "||",
+                      {
+                        "Ref": "AssetParametersa3a94ed0273b96828da3a5bc3694cc96225be49ecd1386dd139c99c6fce45d9fS3VersionKey44FB602D"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Fn::Select": [
+                  1,
+                  {
+                    "Fn::Split": [
+                      "||",
+                      {
+                        "Ref": "AssetParametersa3a94ed0273b96828da3a5bc3694cc96225be49ecd1386dd139c99c6fce45d9fS3VersionKey44FB602D"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          ]
+        },
+        "Parameters": {
+          "referencetoMicroserviceCdkStackAssetParametersfcbdc6836e088c135f093165f26ac77f803a8c9d544b5fbb39e19f8e0d731796S3BucketE6E9D8CDRef": {
+            "Ref": "AssetParametersfcbdc6836e088c135f093165f26ac77f803a8c9d544b5fbb39e19f8e0d731796S3Bucket2C6BE99F"
+          },
+          "referencetoMicroserviceCdkStackAssetParametersfcbdc6836e088c135f093165f26ac77f803a8c9d544b5fbb39e19f8e0d731796S3VersionKey0065B56ERef": {
+            "Ref": "AssetParametersfcbdc6836e088c135f093165f26ac77f803a8c9d544b5fbb39e19f8e0d731796S3VersionKey4D7F7B64"
+          },
+          "referencetoMicroserviceCdkStackAssetParametersc82ab631133fcbacba75e34003554476abe4d086d477fe4dc9c98fb25a6e5affS3Bucket3C3D312BRef": {
+            "Ref": "AssetParametersc82ab631133fcbacba75e34003554476abe4d086d477fe4dc9c98fb25a6e5affS3Bucket9266BA0E"
+          },
+          "referencetoMicroserviceCdkStackAssetParametersc82ab631133fcbacba75e34003554476abe4d086d477fe4dc9c98fb25a6e5affS3VersionKey68E0005DRef": {
+            "Ref": "AssetParametersc82ab631133fcbacba75e34003554476abe4d086d477fe4dc9c98fb25a6e5affS3VersionKey5B5295A8"
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/@aws-cdk--aws-eks.ClusterResourceProvider.NestedStack/@aws-cdk--aws-eks.ClusterResourceProvider.NestedStackResource"
+      }
+    },
+    "awscdkawseksKubectlProviderNestedStackawscdkawseksKubectlProviderNestedStackResourceA7AEBA6B": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "",
+            [
+              "https://s3.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix"
+              },
+              "/",
+              {
+                "Ref": "AssetParameters3472e0c3302883b2ac5a2ac425029378a72023018bb8bab8adfcebbdd4989440S3Bucket27900522"
+              },
+              "/",
+              {
+                "Fn::Select": [
+                  0,
+                  {
+                    "Fn::Split": [
+                      "||",
+                      {
+                        "Ref": "AssetParameters3472e0c3302883b2ac5a2ac425029378a72023018bb8bab8adfcebbdd4989440S3VersionKeyCE1440B8"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Fn::Select": [
+                  1,
+                  {
+                    "Fn::Split": [
+                      "||",
+                      {
+                        "Ref": "AssetParameters3472e0c3302883b2ac5a2ac425029378a72023018bb8bab8adfcebbdd4989440S3VersionKeyCE1440B8"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          ]
+        },
+        "Parameters": {
+          "referencetoMicroserviceCdkStackAssetParameters2d65340a9414c04d1844e421bd328aa3b80015d6a02e74afe9a222168b2ba050S3BucketCD0CA373Ref": {
+            "Ref": "AssetParameters2d65340a9414c04d1844e421bd328aa3b80015d6a02e74afe9a222168b2ba050S3Bucket0EAA682D"
+          },
+          "referencetoMicroserviceCdkStackAssetParameters2d65340a9414c04d1844e421bd328aa3b80015d6a02e74afe9a222168b2ba050S3VersionKeyB650CD9DRef": {
+            "Ref": "AssetParameters2d65340a9414c04d1844e421bd328aa3b80015d6a02e74afe9a222168b2ba050S3VersionKeyF3400812"
+          },
+          "referencetoMicroserviceCdkStackAssetParametersc82ab631133fcbacba75e34003554476abe4d086d477fe4dc9c98fb25a6e5affS3Bucket3C3D312BRef": {
+            "Ref": "AssetParametersc82ab631133fcbacba75e34003554476abe4d086d477fe4dc9c98fb25a6e5affS3Bucket9266BA0E"
+          },
+          "referencetoMicroserviceCdkStackAssetParametersc82ab631133fcbacba75e34003554476abe4d086d477fe4dc9c98fb25a6e5affS3VersionKey68E0005DRef": {
+            "Ref": "AssetParametersc82ab631133fcbacba75e34003554476abe4d086d477fe4dc9c98fb25a6e5affS3VersionKey5B5295A8"
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/@aws-cdk--aws-eks.KubectlProvider.NestedStack/@aws-cdk--aws-eks.KubectlProvider.NestedStackResource"
+      }
+    },
+    "adserviceECRRepository10EBB561": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "RepositoryName": "adservice"
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/adserviceECRRepository/Resource"
+      }
+    },
+    "adserviceCodecommitRepository4090795F": {
+      "Type": "AWS::CodeCommit::Repository",
+      "Properties": {
+        "RepositoryName": "adservice-repo"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/adserviceCodecommitRepository/Resource"
+      }
+    },
+    "adserviceCodecommitRepositoryOnCommit8BC3F6B0": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "EventPattern": {
+          "source": [
+            "aws.codecommit"
+          ],
+          "resources": [
+            {
+              "Fn::GetAtt": [
+                "adserviceCodecommitRepository4090795F",
+                "Arn"
+              ]
+            }
+          ],
+          "detail-type": [
+            "CodeCommit Repository State Change"
+          ],
+          "detail": {
+            "event": [
+              "referenceCreated",
+              "referenceUpdated"
+            ]
+          }
+        },
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": [
+                "adserviceCodebuildProjectA52C7AF9",
+                "Arn"
+              ]
+            },
+            "Id": "Target0",
+            "RoleArn": {
+              "Fn::GetAtt": [
+                "adserviceOnCommitEventEventsRole5E0CF017",
+                "Arn"
+              ]
+            }
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/adserviceCodecommitRepository/OnCommit/Resource"
+      }
+    },
+    "adserviceCodebuildProjectRoleD41BD584": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/adserviceCodebuildProject/Role/Resource"
+      }
+    },
+    "adserviceCodebuildProjectRoleDefaultPolicyBDC6CC99": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codecommit:GitPull",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "adserviceCodecommitRepository4090795F",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "adserviceCodebuildProjectA52C7AF9"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "adserviceCodebuildProjectA52C7AF9"
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "codebuild:CreateReportGroup",
+                "codebuild:CreateReport",
+                "codebuild:UpdateReport",
+                "codebuild:BatchPutTestCases"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":codebuild:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":report-group/",
+                    {
+                      "Ref": "adserviceCodebuildProjectA52C7AF9"
+                    },
+                    "-*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "adserviceECRRepository10EBB561",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "ecr:PutImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "adserviceECRRepository10EBB561",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "eks:DescribeCluster",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "microserviceEksCluster5A133332",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "adserviceCodebuildProjectRoleDefaultPolicyBDC6CC99",
+        "Roles": [
+          {
+            "Ref": "adserviceCodebuildProjectRoleD41BD584"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/adserviceCodebuildProject/Role/DefaultPolicy/Resource"
+      }
+    },
+    "adserviceCodebuildProjectA52C7AF9": {
+      "Type": "AWS::CodeBuild::Project",
+      "Properties": {
+        "Artifacts": {
+          "Type": "NO_ARTIFACTS"
+        },
+        "Environment": {
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "EnvironmentVariables": [
+            {
+              "Name": "CLUSTER_NAME",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Ref": "microserviceEksCluster5A133332"
+              }
+            },
+            {
+              "Name": "ECR_REPO_URI",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::Select": [
+                        4,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "adserviceECRRepository10EBB561",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".dkr.ecr.",
+                    {
+                      "Fn::Select": [
+                        3,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "adserviceECRRepository10EBB561",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    },
+                    "/",
+                    {
+                      "Ref": "adserviceECRRepository10EBB561"
+                    }
+                  ]
+                ]
+              }
+            }
+          ],
+          "Image": "aws/codebuild/standard:3.0",
+          "PrivilegedMode": true,
+          "Type": "LINUX_CONTAINER"
+        },
+        "ServiceRole": {
+          "Fn::GetAtt": [
+            "adserviceCodebuildProjectRoleD41BD584",
+            "Arn"
+          ]
+        },
+        "Source": {
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"pre_build\": {\n      \"commands\": [\n        \"env\",\n        \"export TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION}\",\n        \"wget -O /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubectl\",\n        \"chmod +x /usr/local/bin/kubectl\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"docker build -t $ECR_REPO_URI:$TAG .\",\n        \"docker build -t $ECR_REPO_URI:latest .\",\n        \"$(aws ecr get-login --no-include-email)\",\n        \"docker push $ECR_REPO_URI:$TAG\",\n        \"docker push $ECR_REPO_URI:latest\"\n      ]\n    },\n    \"post_build\": {\n      \"commands\": [\n        \"aws eks update-kubeconfig --name microservice --verbose\",\n        \"kubectl get no\",\n        \"sed s%IMAGE_TAG_PLACEHOLDER%$ECR_REPO_URI:$TAG% k8s/adservice.yaml | kubectl -n microservice apply -f - --record\"\n      ]\n    }\n  }\n}",
+          "Location": {
+            "Fn::GetAtt": [
+              "adserviceCodecommitRepository4090795F",
+              "CloneUrlHttp"
+            ]
+          },
+          "Type": "CODECOMMIT"
+        },
+        "Name": "adservice-build"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/adserviceCodebuildProject/Resource"
+      }
+    },
+    "adserviceOnCommitEventEventsRole5E0CF017": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/adserviceOnCommitEvent/EventsRole/Resource"
+      }
+    },
+    "adserviceOnCommitEventEventsRoleDefaultPolicyB86E8954": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codebuild:StartBuild",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "adserviceCodebuildProjectA52C7AF9",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "adserviceOnCommitEventEventsRoleDefaultPolicyB86E8954",
+        "Roles": [
+          {
+            "Ref": "adserviceOnCommitEventEventsRole5E0CF017"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/adserviceOnCommitEvent/EventsRole/DefaultPolicy/Resource"
+      }
+    },
+    "cartserviceECRRepositoryBF91B2B5": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "RepositoryName": "cartservice"
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/cartserviceECRRepository/Resource"
+      }
+    },
+    "cartserviceCodecommitRepository179B6DD9": {
+      "Type": "AWS::CodeCommit::Repository",
+      "Properties": {
+        "RepositoryName": "cartservice-repo"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/cartserviceCodecommitRepository/Resource"
+      }
+    },
+    "cartserviceCodecommitRepositoryOnCommit5E009BE7": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "EventPattern": {
+          "source": [
+            "aws.codecommit"
+          ],
+          "resources": [
+            {
+              "Fn::GetAtt": [
+                "cartserviceCodecommitRepository179B6DD9",
+                "Arn"
+              ]
+            }
+          ],
+          "detail-type": [
+            "CodeCommit Repository State Change"
+          ],
+          "detail": {
+            "event": [
+              "referenceCreated",
+              "referenceUpdated"
+            ]
+          }
+        },
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": [
+                "cartserviceCodebuildProjectB314A5D0",
+                "Arn"
+              ]
+            },
+            "Id": "Target0",
+            "RoleArn": {
+              "Fn::GetAtt": [
+                "cartserviceOnCommitEventEventsRole55EBF393",
+                "Arn"
+              ]
+            }
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/cartserviceCodecommitRepository/OnCommit/Resource"
+      }
+    },
+    "cartserviceCodebuildProjectRoleAAAB16D5": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/cartserviceCodebuildProject/Role/Resource"
+      }
+    },
+    "cartserviceCodebuildProjectRoleDefaultPolicyB895926D": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codecommit:GitPull",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "cartserviceCodecommitRepository179B6DD9",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "cartserviceCodebuildProjectB314A5D0"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "cartserviceCodebuildProjectB314A5D0"
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "codebuild:CreateReportGroup",
+                "codebuild:CreateReport",
+                "codebuild:UpdateReport",
+                "codebuild:BatchPutTestCases"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":codebuild:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":report-group/",
+                    {
+                      "Ref": "cartserviceCodebuildProjectB314A5D0"
+                    },
+                    "-*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "cartserviceECRRepositoryBF91B2B5",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "ecr:PutImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "cartserviceECRRepositoryBF91B2B5",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "eks:DescribeCluster",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "microserviceEksCluster5A133332",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "cartserviceCodebuildProjectRoleDefaultPolicyB895926D",
+        "Roles": [
+          {
+            "Ref": "cartserviceCodebuildProjectRoleAAAB16D5"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/cartserviceCodebuildProject/Role/DefaultPolicy/Resource"
+      }
+    },
+    "cartserviceCodebuildProjectB314A5D0": {
+      "Type": "AWS::CodeBuild::Project",
+      "Properties": {
+        "Artifacts": {
+          "Type": "NO_ARTIFACTS"
+        },
+        "Environment": {
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "EnvironmentVariables": [
+            {
+              "Name": "CLUSTER_NAME",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Ref": "microserviceEksCluster5A133332"
+              }
+            },
+            {
+              "Name": "ECR_REPO_URI",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::Select": [
+                        4,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "cartserviceECRRepositoryBF91B2B5",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".dkr.ecr.",
+                    {
+                      "Fn::Select": [
+                        3,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "cartserviceECRRepositoryBF91B2B5",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    },
+                    "/",
+                    {
+                      "Ref": "cartserviceECRRepositoryBF91B2B5"
+                    }
+                  ]
+                ]
+              }
+            }
+          ],
+          "Image": "aws/codebuild/standard:3.0",
+          "PrivilegedMode": true,
+          "Type": "LINUX_CONTAINER"
+        },
+        "ServiceRole": {
+          "Fn::GetAtt": [
+            "cartserviceCodebuildProjectRoleAAAB16D5",
+            "Arn"
+          ]
+        },
+        "Source": {
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"pre_build\": {\n      \"commands\": [\n        \"env\",\n        \"export TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION}\",\n        \"wget -O /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubectl\",\n        \"chmod +x /usr/local/bin/kubectl\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"docker build -t $ECR_REPO_URI:$TAG .\",\n        \"docker build -t $ECR_REPO_URI:latest .\",\n        \"$(aws ecr get-login --no-include-email)\",\n        \"docker push $ECR_REPO_URI:$TAG\",\n        \"docker push $ECR_REPO_URI:latest\"\n      ]\n    },\n    \"post_build\": {\n      \"commands\": [\n        \"aws eks update-kubeconfig --name microservice --verbose\",\n        \"kubectl get no\",\n        \"sed s%IMAGE_TAG_PLACEHOLDER%$ECR_REPO_URI:$TAG% k8s/cartservice.yaml | kubectl -n microservice apply -f - --record\"\n      ]\n    }\n  }\n}",
+          "Location": {
+            "Fn::GetAtt": [
+              "cartserviceCodecommitRepository179B6DD9",
+              "CloneUrlHttp"
+            ]
+          },
+          "Type": "CODECOMMIT"
+        },
+        "Name": "cartservice-build"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/cartserviceCodebuildProject/Resource"
+      }
+    },
+    "cartserviceOnCommitEventEventsRole55EBF393": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/cartserviceOnCommitEvent/EventsRole/Resource"
+      }
+    },
+    "cartserviceOnCommitEventEventsRoleDefaultPolicy74038172": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codebuild:StartBuild",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "cartserviceCodebuildProjectB314A5D0",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "cartserviceOnCommitEventEventsRoleDefaultPolicy74038172",
+        "Roles": [
+          {
+            "Ref": "cartserviceOnCommitEventEventsRole55EBF393"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/cartserviceOnCommitEvent/EventsRole/DefaultPolicy/Resource"
+      }
+    },
+    "checkoutserviceECRRepository26C4957A": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "RepositoryName": "checkoutservice"
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/checkoutserviceECRRepository/Resource"
+      }
+    },
+    "checkoutserviceCodecommitRepositoryE1FBFCA7": {
+      "Type": "AWS::CodeCommit::Repository",
+      "Properties": {
+        "RepositoryName": "checkoutservice-repo"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/checkoutserviceCodecommitRepository/Resource"
+      }
+    },
+    "checkoutserviceCodecommitRepositoryOnCommitC571C4F9": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "EventPattern": {
+          "source": [
+            "aws.codecommit"
+          ],
+          "resources": [
+            {
+              "Fn::GetAtt": [
+                "checkoutserviceCodecommitRepositoryE1FBFCA7",
+                "Arn"
+              ]
+            }
+          ],
+          "detail-type": [
+            "CodeCommit Repository State Change"
+          ],
+          "detail": {
+            "event": [
+              "referenceCreated",
+              "referenceUpdated"
+            ]
+          }
+        },
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": [
+                "checkoutserviceCodebuildProjectEB60C298",
+                "Arn"
+              ]
+            },
+            "Id": "Target0",
+            "RoleArn": {
+              "Fn::GetAtt": [
+                "checkoutserviceOnCommitEventEventsRole7DDC9AAD",
+                "Arn"
+              ]
+            }
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/checkoutserviceCodecommitRepository/OnCommit/Resource"
+      }
+    },
+    "checkoutserviceCodebuildProjectRole0E7F0C17": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/checkoutserviceCodebuildProject/Role/Resource"
+      }
+    },
+    "checkoutserviceCodebuildProjectRoleDefaultPolicy356C8EED": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codecommit:GitPull",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "checkoutserviceCodecommitRepositoryE1FBFCA7",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "checkoutserviceCodebuildProjectEB60C298"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "checkoutserviceCodebuildProjectEB60C298"
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "codebuild:CreateReportGroup",
+                "codebuild:CreateReport",
+                "codebuild:UpdateReport",
+                "codebuild:BatchPutTestCases"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":codebuild:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":report-group/",
+                    {
+                      "Ref": "checkoutserviceCodebuildProjectEB60C298"
+                    },
+                    "-*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "checkoutserviceECRRepository26C4957A",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "ecr:PutImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "checkoutserviceECRRepository26C4957A",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "eks:DescribeCluster",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "microserviceEksCluster5A133332",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "checkoutserviceCodebuildProjectRoleDefaultPolicy356C8EED",
+        "Roles": [
+          {
+            "Ref": "checkoutserviceCodebuildProjectRole0E7F0C17"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/checkoutserviceCodebuildProject/Role/DefaultPolicy/Resource"
+      }
+    },
+    "checkoutserviceCodebuildProjectEB60C298": {
+      "Type": "AWS::CodeBuild::Project",
+      "Properties": {
+        "Artifacts": {
+          "Type": "NO_ARTIFACTS"
+        },
+        "Environment": {
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "EnvironmentVariables": [
+            {
+              "Name": "CLUSTER_NAME",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Ref": "microserviceEksCluster5A133332"
+              }
+            },
+            {
+              "Name": "ECR_REPO_URI",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::Select": [
+                        4,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "checkoutserviceECRRepository26C4957A",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".dkr.ecr.",
+                    {
+                      "Fn::Select": [
+                        3,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "checkoutserviceECRRepository26C4957A",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    },
+                    "/",
+                    {
+                      "Ref": "checkoutserviceECRRepository26C4957A"
+                    }
+                  ]
+                ]
+              }
+            }
+          ],
+          "Image": "aws/codebuild/standard:3.0",
+          "PrivilegedMode": true,
+          "Type": "LINUX_CONTAINER"
+        },
+        "ServiceRole": {
+          "Fn::GetAtt": [
+            "checkoutserviceCodebuildProjectRole0E7F0C17",
+            "Arn"
+          ]
+        },
+        "Source": {
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"pre_build\": {\n      \"commands\": [\n        \"env\",\n        \"export TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION}\",\n        \"wget -O /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubectl\",\n        \"chmod +x /usr/local/bin/kubectl\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"docker build -t $ECR_REPO_URI:$TAG .\",\n        \"docker build -t $ECR_REPO_URI:latest .\",\n        \"$(aws ecr get-login --no-include-email)\",\n        \"docker push $ECR_REPO_URI:$TAG\",\n        \"docker push $ECR_REPO_URI:latest\"\n      ]\n    },\n    \"post_build\": {\n      \"commands\": [\n        \"aws eks update-kubeconfig --name microservice --verbose\",\n        \"kubectl get no\",\n        \"sed s%IMAGE_TAG_PLACEHOLDER%$ECR_REPO_URI:$TAG% k8s/checkoutservice.yaml | kubectl -n microservice apply -f - --record\"\n      ]\n    }\n  }\n}",
+          "Location": {
+            "Fn::GetAtt": [
+              "checkoutserviceCodecommitRepositoryE1FBFCA7",
+              "CloneUrlHttp"
+            ]
+          },
+          "Type": "CODECOMMIT"
+        },
+        "Name": "checkoutservice-build"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/checkoutserviceCodebuildProject/Resource"
+      }
+    },
+    "checkoutserviceOnCommitEventEventsRole7DDC9AAD": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/checkoutserviceOnCommitEvent/EventsRole/Resource"
+      }
+    },
+    "checkoutserviceOnCommitEventEventsRoleDefaultPolicy8CB25BAF": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codebuild:StartBuild",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "checkoutserviceCodebuildProjectEB60C298",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "checkoutserviceOnCommitEventEventsRoleDefaultPolicy8CB25BAF",
+        "Roles": [
+          {
+            "Ref": "checkoutserviceOnCommitEventEventsRole7DDC9AAD"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/checkoutserviceOnCommitEvent/EventsRole/DefaultPolicy/Resource"
+      }
+    },
+    "currencyserviceECRRepositoryA92FE64A": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "RepositoryName": "currencyservice"
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/currencyserviceECRRepository/Resource"
+      }
+    },
+    "currencyserviceCodecommitRepository3C9C1F88": {
+      "Type": "AWS::CodeCommit::Repository",
+      "Properties": {
+        "RepositoryName": "currencyservice-repo"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/currencyserviceCodecommitRepository/Resource"
+      }
+    },
+    "currencyserviceCodecommitRepositoryOnCommitFB142335": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "EventPattern": {
+          "source": [
+            "aws.codecommit"
+          ],
+          "resources": [
+            {
+              "Fn::GetAtt": [
+                "currencyserviceCodecommitRepository3C9C1F88",
+                "Arn"
+              ]
+            }
+          ],
+          "detail-type": [
+            "CodeCommit Repository State Change"
+          ],
+          "detail": {
+            "event": [
+              "referenceCreated",
+              "referenceUpdated"
+            ]
+          }
+        },
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": [
+                "currencyserviceCodebuildProjectF1536668",
+                "Arn"
+              ]
+            },
+            "Id": "Target0",
+            "RoleArn": {
+              "Fn::GetAtt": [
+                "currencyserviceOnCommitEventEventsRole007BB719",
+                "Arn"
+              ]
+            }
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/currencyserviceCodecommitRepository/OnCommit/Resource"
+      }
+    },
+    "currencyserviceCodebuildProjectRole4B116603": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/currencyserviceCodebuildProject/Role/Resource"
+      }
+    },
+    "currencyserviceCodebuildProjectRoleDefaultPolicy07C161F2": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codecommit:GitPull",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "currencyserviceCodecommitRepository3C9C1F88",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "currencyserviceCodebuildProjectF1536668"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "currencyserviceCodebuildProjectF1536668"
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "codebuild:CreateReportGroup",
+                "codebuild:CreateReport",
+                "codebuild:UpdateReport",
+                "codebuild:BatchPutTestCases"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":codebuild:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":report-group/",
+                    {
+                      "Ref": "currencyserviceCodebuildProjectF1536668"
+                    },
+                    "-*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "currencyserviceECRRepositoryA92FE64A",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "ecr:PutImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "currencyserviceECRRepositoryA92FE64A",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "eks:DescribeCluster",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "microserviceEksCluster5A133332",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "currencyserviceCodebuildProjectRoleDefaultPolicy07C161F2",
+        "Roles": [
+          {
+            "Ref": "currencyserviceCodebuildProjectRole4B116603"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/currencyserviceCodebuildProject/Role/DefaultPolicy/Resource"
+      }
+    },
+    "currencyserviceCodebuildProjectF1536668": {
+      "Type": "AWS::CodeBuild::Project",
+      "Properties": {
+        "Artifacts": {
+          "Type": "NO_ARTIFACTS"
+        },
+        "Environment": {
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "EnvironmentVariables": [
+            {
+              "Name": "CLUSTER_NAME",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Ref": "microserviceEksCluster5A133332"
+              }
+            },
+            {
+              "Name": "ECR_REPO_URI",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::Select": [
+                        4,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "currencyserviceECRRepositoryA92FE64A",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".dkr.ecr.",
+                    {
+                      "Fn::Select": [
+                        3,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "currencyserviceECRRepositoryA92FE64A",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    },
+                    "/",
+                    {
+                      "Ref": "currencyserviceECRRepositoryA92FE64A"
+                    }
+                  ]
+                ]
+              }
+            }
+          ],
+          "Image": "aws/codebuild/standard:3.0",
+          "PrivilegedMode": true,
+          "Type": "LINUX_CONTAINER"
+        },
+        "ServiceRole": {
+          "Fn::GetAtt": [
+            "currencyserviceCodebuildProjectRole4B116603",
+            "Arn"
+          ]
+        },
+        "Source": {
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"pre_build\": {\n      \"commands\": [\n        \"env\",\n        \"export TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION}\",\n        \"wget -O /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubectl\",\n        \"chmod +x /usr/local/bin/kubectl\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"docker build -t $ECR_REPO_URI:$TAG .\",\n        \"docker build -t $ECR_REPO_URI:latest .\",\n        \"$(aws ecr get-login --no-include-email)\",\n        \"docker push $ECR_REPO_URI:$TAG\",\n        \"docker push $ECR_REPO_URI:latest\"\n      ]\n    },\n    \"post_build\": {\n      \"commands\": [\n        \"aws eks update-kubeconfig --name microservice --verbose\",\n        \"kubectl get no\",\n        \"sed s%IMAGE_TAG_PLACEHOLDER%$ECR_REPO_URI:$TAG% k8s/currencyservice.yaml | kubectl -n microservice apply -f - --record\"\n      ]\n    }\n  }\n}",
+          "Location": {
+            "Fn::GetAtt": [
+              "currencyserviceCodecommitRepository3C9C1F88",
+              "CloneUrlHttp"
+            ]
+          },
+          "Type": "CODECOMMIT"
+        },
+        "Name": "currencyservice-build"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/currencyserviceCodebuildProject/Resource"
+      }
+    },
+    "currencyserviceOnCommitEventEventsRole007BB719": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/currencyserviceOnCommitEvent/EventsRole/Resource"
+      }
+    },
+    "currencyserviceOnCommitEventEventsRoleDefaultPolicy62ADD71C": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codebuild:StartBuild",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "currencyserviceCodebuildProjectF1536668",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "currencyserviceOnCommitEventEventsRoleDefaultPolicy62ADD71C",
+        "Roles": [
+          {
+            "Ref": "currencyserviceOnCommitEventEventsRole007BB719"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/currencyserviceOnCommitEvent/EventsRole/DefaultPolicy/Resource"
+      }
+    },
+    "emailserviceECRRepository8E5CED84": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "RepositoryName": "emailservice"
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/emailserviceECRRepository/Resource"
+      }
+    },
+    "emailserviceCodecommitRepositoryE9A82B29": {
+      "Type": "AWS::CodeCommit::Repository",
+      "Properties": {
+        "RepositoryName": "emailservice-repo"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/emailserviceCodecommitRepository/Resource"
+      }
+    },
+    "emailserviceCodecommitRepositoryOnCommit2E10CEB8": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "EventPattern": {
+          "source": [
+            "aws.codecommit"
+          ],
+          "resources": [
+            {
+              "Fn::GetAtt": [
+                "emailserviceCodecommitRepositoryE9A82B29",
+                "Arn"
+              ]
+            }
+          ],
+          "detail-type": [
+            "CodeCommit Repository State Change"
+          ],
+          "detail": {
+            "event": [
+              "referenceCreated",
+              "referenceUpdated"
+            ]
+          }
+        },
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": [
+                "emailserviceCodebuildProject53CC5C5F",
+                "Arn"
+              ]
+            },
+            "Id": "Target0",
+            "RoleArn": {
+              "Fn::GetAtt": [
+                "emailserviceOnCommitEventEventsRole2D8774D0",
+                "Arn"
+              ]
+            }
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/emailserviceCodecommitRepository/OnCommit/Resource"
+      }
+    },
+    "emailserviceCodebuildProjectRole0877E35B": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/emailserviceCodebuildProject/Role/Resource"
+      }
+    },
+    "emailserviceCodebuildProjectRoleDefaultPolicyEFB0D9A1": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codecommit:GitPull",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "emailserviceCodecommitRepositoryE9A82B29",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "emailserviceCodebuildProject53CC5C5F"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "emailserviceCodebuildProject53CC5C5F"
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "codebuild:CreateReportGroup",
+                "codebuild:CreateReport",
+                "codebuild:UpdateReport",
+                "codebuild:BatchPutTestCases"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":codebuild:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":report-group/",
+                    {
+                      "Ref": "emailserviceCodebuildProject53CC5C5F"
+                    },
+                    "-*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "emailserviceECRRepository8E5CED84",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "ecr:PutImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "emailserviceECRRepository8E5CED84",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "eks:DescribeCluster",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "microserviceEksCluster5A133332",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "emailserviceCodebuildProjectRoleDefaultPolicyEFB0D9A1",
+        "Roles": [
+          {
+            "Ref": "emailserviceCodebuildProjectRole0877E35B"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/emailserviceCodebuildProject/Role/DefaultPolicy/Resource"
+      }
+    },
+    "emailserviceCodebuildProject53CC5C5F": {
+      "Type": "AWS::CodeBuild::Project",
+      "Properties": {
+        "Artifacts": {
+          "Type": "NO_ARTIFACTS"
+        },
+        "Environment": {
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "EnvironmentVariables": [
+            {
+              "Name": "CLUSTER_NAME",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Ref": "microserviceEksCluster5A133332"
+              }
+            },
+            {
+              "Name": "ECR_REPO_URI",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::Select": [
+                        4,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "emailserviceECRRepository8E5CED84",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".dkr.ecr.",
+                    {
+                      "Fn::Select": [
+                        3,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "emailserviceECRRepository8E5CED84",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    },
+                    "/",
+                    {
+                      "Ref": "emailserviceECRRepository8E5CED84"
+                    }
+                  ]
+                ]
+              }
+            }
+          ],
+          "Image": "aws/codebuild/standard:3.0",
+          "PrivilegedMode": true,
+          "Type": "LINUX_CONTAINER"
+        },
+        "ServiceRole": {
+          "Fn::GetAtt": [
+            "emailserviceCodebuildProjectRole0877E35B",
+            "Arn"
+          ]
+        },
+        "Source": {
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"pre_build\": {\n      \"commands\": [\n        \"env\",\n        \"export TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION}\",\n        \"wget -O /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubectl\",\n        \"chmod +x /usr/local/bin/kubectl\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"docker build -t $ECR_REPO_URI:$TAG .\",\n        \"docker build -t $ECR_REPO_URI:latest .\",\n        \"$(aws ecr get-login --no-include-email)\",\n        \"docker push $ECR_REPO_URI:$TAG\",\n        \"docker push $ECR_REPO_URI:latest\"\n      ]\n    },\n    \"post_build\": {\n      \"commands\": [\n        \"aws eks update-kubeconfig --name microservice --verbose\",\n        \"kubectl get no\",\n        \"sed s%IMAGE_TAG_PLACEHOLDER%$ECR_REPO_URI:$TAG% k8s/emailservice.yaml | kubectl -n microservice apply -f - --record\"\n      ]\n    }\n  }\n}",
+          "Location": {
+            "Fn::GetAtt": [
+              "emailserviceCodecommitRepositoryE9A82B29",
+              "CloneUrlHttp"
+            ]
+          },
+          "Type": "CODECOMMIT"
+        },
+        "Name": "emailservice-build"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/emailserviceCodebuildProject/Resource"
+      }
+    },
+    "emailserviceOnCommitEventEventsRole2D8774D0": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/emailserviceOnCommitEvent/EventsRole/Resource"
+      }
+    },
+    "emailserviceOnCommitEventEventsRoleDefaultPolicyF675B93E": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codebuild:StartBuild",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "emailserviceCodebuildProject53CC5C5F",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "emailserviceOnCommitEventEventsRoleDefaultPolicyF675B93E",
+        "Roles": [
+          {
+            "Ref": "emailserviceOnCommitEventEventsRole2D8774D0"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/emailserviceOnCommitEvent/EventsRole/DefaultPolicy/Resource"
+      }
+    },
+    "frontendECRRepository4E3468F0": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "RepositoryName": "frontend"
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/frontendECRRepository/Resource"
+      }
+    },
+    "frontendCodecommitRepository75E4D906": {
+      "Type": "AWS::CodeCommit::Repository",
+      "Properties": {
+        "RepositoryName": "frontend-repo"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/frontendCodecommitRepository/Resource"
+      }
+    },
+    "frontendCodecommitRepositoryOnCommitE5FDF295": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "EventPattern": {
+          "source": [
+            "aws.codecommit"
+          ],
+          "resources": [
+            {
+              "Fn::GetAtt": [
+                "frontendCodecommitRepository75E4D906",
+                "Arn"
+              ]
+            }
+          ],
+          "detail-type": [
+            "CodeCommit Repository State Change"
+          ],
+          "detail": {
+            "event": [
+              "referenceCreated",
+              "referenceUpdated"
+            ]
+          }
+        },
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": [
+                "frontendCodebuildProject602461E9",
+                "Arn"
+              ]
+            },
+            "Id": "Target0",
+            "RoleArn": {
+              "Fn::GetAtt": [
+                "frontendOnCommitEventEventsRoleF4F391EF",
+                "Arn"
+              ]
+            }
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/frontendCodecommitRepository/OnCommit/Resource"
+      }
+    },
+    "frontendCodebuildProjectRole28B5B930": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/frontendCodebuildProject/Role/Resource"
+      }
+    },
+    "frontendCodebuildProjectRoleDefaultPolicyB5CDD586": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codecommit:GitPull",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "frontendCodecommitRepository75E4D906",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "frontendCodebuildProject602461E9"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "frontendCodebuildProject602461E9"
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "codebuild:CreateReportGroup",
+                "codebuild:CreateReport",
+                "codebuild:UpdateReport",
+                "codebuild:BatchPutTestCases"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":codebuild:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":report-group/",
+                    {
+                      "Ref": "frontendCodebuildProject602461E9"
+                    },
+                    "-*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "frontendECRRepository4E3468F0",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "ecr:PutImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "frontendECRRepository4E3468F0",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "eks:DescribeCluster",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "microserviceEksCluster5A133332",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "frontendCodebuildProjectRoleDefaultPolicyB5CDD586",
+        "Roles": [
+          {
+            "Ref": "frontendCodebuildProjectRole28B5B930"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/frontendCodebuildProject/Role/DefaultPolicy/Resource"
+      }
+    },
+    "frontendCodebuildProject602461E9": {
+      "Type": "AWS::CodeBuild::Project",
+      "Properties": {
+        "Artifacts": {
+          "Type": "NO_ARTIFACTS"
+        },
+        "Environment": {
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "EnvironmentVariables": [
+            {
+              "Name": "CLUSTER_NAME",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Ref": "microserviceEksCluster5A133332"
+              }
+            },
+            {
+              "Name": "ECR_REPO_URI",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::Select": [
+                        4,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "frontendECRRepository4E3468F0",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".dkr.ecr.",
+                    {
+                      "Fn::Select": [
+                        3,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "frontendECRRepository4E3468F0",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    },
+                    "/",
+                    {
+                      "Ref": "frontendECRRepository4E3468F0"
+                    }
+                  ]
+                ]
+              }
+            }
+          ],
+          "Image": "aws/codebuild/standard:3.0",
+          "PrivilegedMode": true,
+          "Type": "LINUX_CONTAINER"
+        },
+        "ServiceRole": {
+          "Fn::GetAtt": [
+            "frontendCodebuildProjectRole28B5B930",
+            "Arn"
+          ]
+        },
+        "Source": {
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"pre_build\": {\n      \"commands\": [\n        \"env\",\n        \"export TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION}\",\n        \"wget -O /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubectl\",\n        \"chmod +x /usr/local/bin/kubectl\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"docker build -t $ECR_REPO_URI:$TAG .\",\n        \"docker build -t $ECR_REPO_URI:latest .\",\n        \"$(aws ecr get-login --no-include-email)\",\n        \"docker push $ECR_REPO_URI:$TAG\",\n        \"docker push $ECR_REPO_URI:latest\"\n      ]\n    },\n    \"post_build\": {\n      \"commands\": [\n        \"aws eks update-kubeconfig --name microservice --verbose\",\n        \"kubectl get no\",\n        \"sed s%IMAGE_TAG_PLACEHOLDER%$ECR_REPO_URI:$TAG% k8s/frontend.yaml | kubectl -n microservice apply -f - --record\"\n      ]\n    }\n  }\n}",
+          "Location": {
+            "Fn::GetAtt": [
+              "frontendCodecommitRepository75E4D906",
+              "CloneUrlHttp"
+            ]
+          },
+          "Type": "CODECOMMIT"
+        },
+        "Name": "frontend-build"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/frontendCodebuildProject/Resource"
+      }
+    },
+    "frontendOnCommitEventEventsRoleF4F391EF": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/frontendOnCommitEvent/EventsRole/Resource"
+      }
+    },
+    "frontendOnCommitEventEventsRoleDefaultPolicyFAFB89AD": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codebuild:StartBuild",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "frontendCodebuildProject602461E9",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "frontendOnCommitEventEventsRoleDefaultPolicyFAFB89AD",
+        "Roles": [
+          {
+            "Ref": "frontendOnCommitEventEventsRoleF4F391EF"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/frontendOnCommitEvent/EventsRole/DefaultPolicy/Resource"
+      }
+    },
+    "paymentserviceECRRepositoryCFF1CC5F": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "RepositoryName": "paymentservice"
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/paymentserviceECRRepository/Resource"
+      }
+    },
+    "paymentserviceCodecommitRepository4A8DD7C9": {
+      "Type": "AWS::CodeCommit::Repository",
+      "Properties": {
+        "RepositoryName": "paymentservice-repo"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/paymentserviceCodecommitRepository/Resource"
+      }
+    },
+    "paymentserviceCodecommitRepositoryOnCommit845DB918": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "EventPattern": {
+          "source": [
+            "aws.codecommit"
+          ],
+          "resources": [
+            {
+              "Fn::GetAtt": [
+                "paymentserviceCodecommitRepository4A8DD7C9",
+                "Arn"
+              ]
+            }
+          ],
+          "detail-type": [
+            "CodeCommit Repository State Change"
+          ],
+          "detail": {
+            "event": [
+              "referenceCreated",
+              "referenceUpdated"
+            ]
+          }
+        },
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": [
+                "paymentserviceCodebuildProjectCE048920",
+                "Arn"
+              ]
+            },
+            "Id": "Target0",
+            "RoleArn": {
+              "Fn::GetAtt": [
+                "paymentserviceOnCommitEventEventsRoleFD61381E",
+                "Arn"
+              ]
+            }
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/paymentserviceCodecommitRepository/OnCommit/Resource"
+      }
+    },
+    "paymentserviceCodebuildProjectRoleB564D833": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/paymentserviceCodebuildProject/Role/Resource"
+      }
+    },
+    "paymentserviceCodebuildProjectRoleDefaultPolicyA8BCA6FE": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codecommit:GitPull",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "paymentserviceCodecommitRepository4A8DD7C9",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "paymentserviceCodebuildProjectCE048920"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "paymentserviceCodebuildProjectCE048920"
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "codebuild:CreateReportGroup",
+                "codebuild:CreateReport",
+                "codebuild:UpdateReport",
+                "codebuild:BatchPutTestCases"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":codebuild:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":report-group/",
+                    {
+                      "Ref": "paymentserviceCodebuildProjectCE048920"
+                    },
+                    "-*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "paymentserviceECRRepositoryCFF1CC5F",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "ecr:PutImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "paymentserviceECRRepositoryCFF1CC5F",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "eks:DescribeCluster",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "microserviceEksCluster5A133332",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "paymentserviceCodebuildProjectRoleDefaultPolicyA8BCA6FE",
+        "Roles": [
+          {
+            "Ref": "paymentserviceCodebuildProjectRoleB564D833"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/paymentserviceCodebuildProject/Role/DefaultPolicy/Resource"
+      }
+    },
+    "paymentserviceCodebuildProjectCE048920": {
+      "Type": "AWS::CodeBuild::Project",
+      "Properties": {
+        "Artifacts": {
+          "Type": "NO_ARTIFACTS"
+        },
+        "Environment": {
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "EnvironmentVariables": [
+            {
+              "Name": "CLUSTER_NAME",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Ref": "microserviceEksCluster5A133332"
+              }
+            },
+            {
+              "Name": "ECR_REPO_URI",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::Select": [
+                        4,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "paymentserviceECRRepositoryCFF1CC5F",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".dkr.ecr.",
+                    {
+                      "Fn::Select": [
+                        3,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "paymentserviceECRRepositoryCFF1CC5F",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    },
+                    "/",
+                    {
+                      "Ref": "paymentserviceECRRepositoryCFF1CC5F"
+                    }
+                  ]
+                ]
+              }
+            }
+          ],
+          "Image": "aws/codebuild/standard:3.0",
+          "PrivilegedMode": true,
+          "Type": "LINUX_CONTAINER"
+        },
+        "ServiceRole": {
+          "Fn::GetAtt": [
+            "paymentserviceCodebuildProjectRoleB564D833",
+            "Arn"
+          ]
+        },
+        "Source": {
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"pre_build\": {\n      \"commands\": [\n        \"env\",\n        \"export TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION}\",\n        \"wget -O /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubectl\",\n        \"chmod +x /usr/local/bin/kubectl\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"docker build -t $ECR_REPO_URI:$TAG .\",\n        \"docker build -t $ECR_REPO_URI:latest .\",\n        \"$(aws ecr get-login --no-include-email)\",\n        \"docker push $ECR_REPO_URI:$TAG\",\n        \"docker push $ECR_REPO_URI:latest\"\n      ]\n    },\n    \"post_build\": {\n      \"commands\": [\n        \"aws eks update-kubeconfig --name microservice --verbose\",\n        \"kubectl get no\",\n        \"sed s%IMAGE_TAG_PLACEHOLDER%$ECR_REPO_URI:$TAG% k8s/paymentservice.yaml | kubectl -n microservice apply -f - --record\"\n      ]\n    }\n  }\n}",
+          "Location": {
+            "Fn::GetAtt": [
+              "paymentserviceCodecommitRepository4A8DD7C9",
+              "CloneUrlHttp"
+            ]
+          },
+          "Type": "CODECOMMIT"
+        },
+        "Name": "paymentservice-build"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/paymentserviceCodebuildProject/Resource"
+      }
+    },
+    "paymentserviceOnCommitEventEventsRoleFD61381E": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/paymentserviceOnCommitEvent/EventsRole/Resource"
+      }
+    },
+    "paymentserviceOnCommitEventEventsRoleDefaultPolicyCAD39119": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codebuild:StartBuild",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "paymentserviceCodebuildProjectCE048920",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "paymentserviceOnCommitEventEventsRoleDefaultPolicyCAD39119",
+        "Roles": [
+          {
+            "Ref": "paymentserviceOnCommitEventEventsRoleFD61381E"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/paymentserviceOnCommitEvent/EventsRole/DefaultPolicy/Resource"
+      }
+    },
+    "productcatalogserviceECRRepository5C4BD5BC": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "RepositoryName": "productcatalogservice"
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/productcatalogserviceECRRepository/Resource"
+      }
+    },
+    "productcatalogserviceCodecommitRepositoryBAEFC947": {
+      "Type": "AWS::CodeCommit::Repository",
+      "Properties": {
+        "RepositoryName": "productcatalogservice-repo"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/productcatalogserviceCodecommitRepository/Resource"
+      }
+    },
+    "productcatalogserviceCodecommitRepositoryOnCommitE867F288": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "EventPattern": {
+          "source": [
+            "aws.codecommit"
+          ],
+          "resources": [
+            {
+              "Fn::GetAtt": [
+                "productcatalogserviceCodecommitRepositoryBAEFC947",
+                "Arn"
+              ]
+            }
+          ],
+          "detail-type": [
+            "CodeCommit Repository State Change"
+          ],
+          "detail": {
+            "event": [
+              "referenceCreated",
+              "referenceUpdated"
+            ]
+          }
+        },
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": [
+                "productcatalogserviceCodebuildProject5C97123A",
+                "Arn"
+              ]
+            },
+            "Id": "Target0",
+            "RoleArn": {
+              "Fn::GetAtt": [
+                "productcatalogserviceOnCommitEventEventsRole0A40EF90",
+                "Arn"
+              ]
+            }
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/productcatalogserviceCodecommitRepository/OnCommit/Resource"
+      }
+    },
+    "productcatalogserviceCodebuildProjectRole2861B959": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/productcatalogserviceCodebuildProject/Role/Resource"
+      }
+    },
+    "productcatalogserviceCodebuildProjectRoleDefaultPolicy2D7ECCD1": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codecommit:GitPull",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "productcatalogserviceCodecommitRepositoryBAEFC947",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "productcatalogserviceCodebuildProject5C97123A"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "productcatalogserviceCodebuildProject5C97123A"
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "codebuild:CreateReportGroup",
+                "codebuild:CreateReport",
+                "codebuild:UpdateReport",
+                "codebuild:BatchPutTestCases"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":codebuild:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":report-group/",
+                    {
+                      "Ref": "productcatalogserviceCodebuildProject5C97123A"
+                    },
+                    "-*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "productcatalogserviceECRRepository5C4BD5BC",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "ecr:PutImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "productcatalogserviceECRRepository5C4BD5BC",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "eks:DescribeCluster",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "microserviceEksCluster5A133332",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "productcatalogserviceCodebuildProjectRoleDefaultPolicy2D7ECCD1",
+        "Roles": [
+          {
+            "Ref": "productcatalogserviceCodebuildProjectRole2861B959"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/productcatalogserviceCodebuildProject/Role/DefaultPolicy/Resource"
+      }
+    },
+    "productcatalogserviceCodebuildProject5C97123A": {
+      "Type": "AWS::CodeBuild::Project",
+      "Properties": {
+        "Artifacts": {
+          "Type": "NO_ARTIFACTS"
+        },
+        "Environment": {
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "EnvironmentVariables": [
+            {
+              "Name": "CLUSTER_NAME",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Ref": "microserviceEksCluster5A133332"
+              }
+            },
+            {
+              "Name": "ECR_REPO_URI",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::Select": [
+                        4,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "productcatalogserviceECRRepository5C4BD5BC",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".dkr.ecr.",
+                    {
+                      "Fn::Select": [
+                        3,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "productcatalogserviceECRRepository5C4BD5BC",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    },
+                    "/",
+                    {
+                      "Ref": "productcatalogserviceECRRepository5C4BD5BC"
+                    }
+                  ]
+                ]
+              }
+            }
+          ],
+          "Image": "aws/codebuild/standard:3.0",
+          "PrivilegedMode": true,
+          "Type": "LINUX_CONTAINER"
+        },
+        "ServiceRole": {
+          "Fn::GetAtt": [
+            "productcatalogserviceCodebuildProjectRole2861B959",
+            "Arn"
+          ]
+        },
+        "Source": {
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"pre_build\": {\n      \"commands\": [\n        \"env\",\n        \"export TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION}\",\n        \"wget -O /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubectl\",\n        \"chmod +x /usr/local/bin/kubectl\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"docker build -t $ECR_REPO_URI:$TAG .\",\n        \"docker build -t $ECR_REPO_URI:latest .\",\n        \"$(aws ecr get-login --no-include-email)\",\n        \"docker push $ECR_REPO_URI:$TAG\",\n        \"docker push $ECR_REPO_URI:latest\"\n      ]\n    },\n    \"post_build\": {\n      \"commands\": [\n        \"aws eks update-kubeconfig --name microservice --verbose\",\n        \"kubectl get no\",\n        \"sed s%IMAGE_TAG_PLACEHOLDER%$ECR_REPO_URI:$TAG% k8s/productcatalogservice.yaml | kubectl -n microservice apply -f - --record\"\n      ]\n    }\n  }\n}",
+          "Location": {
+            "Fn::GetAtt": [
+              "productcatalogserviceCodecommitRepositoryBAEFC947",
+              "CloneUrlHttp"
+            ]
+          },
+          "Type": "CODECOMMIT"
+        },
+        "Name": "productcatalogservice-build"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/productcatalogserviceCodebuildProject/Resource"
+      }
+    },
+    "productcatalogserviceOnCommitEventEventsRole0A40EF90": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/productcatalogserviceOnCommitEvent/EventsRole/Resource"
+      }
+    },
+    "productcatalogserviceOnCommitEventEventsRoleDefaultPolicyC38FC506": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codebuild:StartBuild",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "productcatalogserviceCodebuildProject5C97123A",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "productcatalogserviceOnCommitEventEventsRoleDefaultPolicyC38FC506",
+        "Roles": [
+          {
+            "Ref": "productcatalogserviceOnCommitEventEventsRole0A40EF90"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/productcatalogserviceOnCommitEvent/EventsRole/DefaultPolicy/Resource"
+      }
+    },
+    "recommendationserviceECRRepositoryDF081D41": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "RepositoryName": "recommendationservice"
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/recommendationserviceECRRepository/Resource"
+      }
+    },
+    "recommendationserviceCodecommitRepository6FCB4356": {
+      "Type": "AWS::CodeCommit::Repository",
+      "Properties": {
+        "RepositoryName": "recommendationservice-repo"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/recommendationserviceCodecommitRepository/Resource"
+      }
+    },
+    "recommendationserviceCodecommitRepositoryOnCommit439BCFC9": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "EventPattern": {
+          "source": [
+            "aws.codecommit"
+          ],
+          "resources": [
+            {
+              "Fn::GetAtt": [
+                "recommendationserviceCodecommitRepository6FCB4356",
+                "Arn"
+              ]
+            }
+          ],
+          "detail-type": [
+            "CodeCommit Repository State Change"
+          ],
+          "detail": {
+            "event": [
+              "referenceCreated",
+              "referenceUpdated"
+            ]
+          }
+        },
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": [
+                "recommendationserviceCodebuildProjectE3BA9C6C",
+                "Arn"
+              ]
+            },
+            "Id": "Target0",
+            "RoleArn": {
+              "Fn::GetAtt": [
+                "recommendationserviceOnCommitEventEventsRole66D4782F",
+                "Arn"
+              ]
+            }
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/recommendationserviceCodecommitRepository/OnCommit/Resource"
+      }
+    },
+    "recommendationserviceCodebuildProjectRole1C492664": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/recommendationserviceCodebuildProject/Role/Resource"
+      }
+    },
+    "recommendationserviceCodebuildProjectRoleDefaultPolicy6FE061CC": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codecommit:GitPull",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "recommendationserviceCodecommitRepository6FCB4356",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "recommendationserviceCodebuildProjectE3BA9C6C"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "recommendationserviceCodebuildProjectE3BA9C6C"
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "codebuild:CreateReportGroup",
+                "codebuild:CreateReport",
+                "codebuild:UpdateReport",
+                "codebuild:BatchPutTestCases"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":codebuild:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":report-group/",
+                    {
+                      "Ref": "recommendationserviceCodebuildProjectE3BA9C6C"
+                    },
+                    "-*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "recommendationserviceECRRepositoryDF081D41",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "ecr:PutImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "recommendationserviceECRRepositoryDF081D41",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "eks:DescribeCluster",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "microserviceEksCluster5A133332",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "recommendationserviceCodebuildProjectRoleDefaultPolicy6FE061CC",
+        "Roles": [
+          {
+            "Ref": "recommendationserviceCodebuildProjectRole1C492664"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/recommendationserviceCodebuildProject/Role/DefaultPolicy/Resource"
+      }
+    },
+    "recommendationserviceCodebuildProjectE3BA9C6C": {
+      "Type": "AWS::CodeBuild::Project",
+      "Properties": {
+        "Artifacts": {
+          "Type": "NO_ARTIFACTS"
+        },
+        "Environment": {
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "EnvironmentVariables": [
+            {
+              "Name": "CLUSTER_NAME",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Ref": "microserviceEksCluster5A133332"
+              }
+            },
+            {
+              "Name": "ECR_REPO_URI",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::Select": [
+                        4,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "recommendationserviceECRRepositoryDF081D41",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".dkr.ecr.",
+                    {
+                      "Fn::Select": [
+                        3,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "recommendationserviceECRRepositoryDF081D41",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    },
+                    "/",
+                    {
+                      "Ref": "recommendationserviceECRRepositoryDF081D41"
+                    }
+                  ]
+                ]
+              }
+            }
+          ],
+          "Image": "aws/codebuild/standard:3.0",
+          "PrivilegedMode": true,
+          "Type": "LINUX_CONTAINER"
+        },
+        "ServiceRole": {
+          "Fn::GetAtt": [
+            "recommendationserviceCodebuildProjectRole1C492664",
+            "Arn"
+          ]
+        },
+        "Source": {
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"pre_build\": {\n      \"commands\": [\n        \"env\",\n        \"export TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION}\",\n        \"wget -O /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubectl\",\n        \"chmod +x /usr/local/bin/kubectl\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"docker build -t $ECR_REPO_URI:$TAG .\",\n        \"docker build -t $ECR_REPO_URI:latest .\",\n        \"$(aws ecr get-login --no-include-email)\",\n        \"docker push $ECR_REPO_URI:$TAG\",\n        \"docker push $ECR_REPO_URI:latest\"\n      ]\n    },\n    \"post_build\": {\n      \"commands\": [\n        \"aws eks update-kubeconfig --name microservice --verbose\",\n        \"kubectl get no\",\n        \"sed s%IMAGE_TAG_PLACEHOLDER%$ECR_REPO_URI:$TAG% k8s/recommendationservice.yaml | kubectl -n microservice apply -f - --record\"\n      ]\n    }\n  }\n}",
+          "Location": {
+            "Fn::GetAtt": [
+              "recommendationserviceCodecommitRepository6FCB4356",
+              "CloneUrlHttp"
+            ]
+          },
+          "Type": "CODECOMMIT"
+        },
+        "Name": "recommendationservice-build"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/recommendationserviceCodebuildProject/Resource"
+      }
+    },
+    "recommendationserviceOnCommitEventEventsRole66D4782F": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/recommendationserviceOnCommitEvent/EventsRole/Resource"
+      }
+    },
+    "recommendationserviceOnCommitEventEventsRoleDefaultPolicy0DD84D49": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codebuild:StartBuild",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "recommendationserviceCodebuildProjectE3BA9C6C",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "recommendationserviceOnCommitEventEventsRoleDefaultPolicy0DD84D49",
+        "Roles": [
+          {
+            "Ref": "recommendationserviceOnCommitEventEventsRole66D4782F"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/recommendationserviceOnCommitEvent/EventsRole/DefaultPolicy/Resource"
+      }
+    },
+    "shippingserviceECRRepository7AFC10B9": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "RepositoryName": "shippingservice"
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/shippingserviceECRRepository/Resource"
+      }
+    },
+    "shippingserviceCodecommitRepository14194CA3": {
+      "Type": "AWS::CodeCommit::Repository",
+      "Properties": {
+        "RepositoryName": "shippingservice-repo"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/shippingserviceCodecommitRepository/Resource"
+      }
+    },
+    "shippingserviceCodecommitRepositoryOnCommit107D8218": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "EventPattern": {
+          "source": [
+            "aws.codecommit"
+          ],
+          "resources": [
+            {
+              "Fn::GetAtt": [
+                "shippingserviceCodecommitRepository14194CA3",
+                "Arn"
+              ]
+            }
+          ],
+          "detail-type": [
+            "CodeCommit Repository State Change"
+          ],
+          "detail": {
+            "event": [
+              "referenceCreated",
+              "referenceUpdated"
+            ]
+          }
+        },
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": [
+                "shippingserviceCodebuildProjectD4D71638",
+                "Arn"
+              ]
+            },
+            "Id": "Target0",
+            "RoleArn": {
+              "Fn::GetAtt": [
+                "shippingserviceOnCommitEventEventsRole1B3C4256",
+                "Arn"
+              ]
+            }
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/shippingserviceCodecommitRepository/OnCommit/Resource"
+      }
+    },
+    "shippingserviceCodebuildProjectRoleA150061F": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/shippingserviceCodebuildProject/Role/Resource"
+      }
+    },
+    "shippingserviceCodebuildProjectRoleDefaultPolicy25E9334B": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codecommit:GitPull",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "shippingserviceCodecommitRepository14194CA3",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "shippingserviceCodebuildProjectD4D71638"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "shippingserviceCodebuildProjectD4D71638"
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "codebuild:CreateReportGroup",
+                "codebuild:CreateReport",
+                "codebuild:UpdateReport",
+                "codebuild:BatchPutTestCases"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":codebuild:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":report-group/",
+                    {
+                      "Ref": "shippingserviceCodebuildProjectD4D71638"
+                    },
+                    "-*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "shippingserviceECRRepository7AFC10B9",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "ecr:PutImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "shippingserviceECRRepository7AFC10B9",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "eks:DescribeCluster",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "microserviceEksCluster5A133332",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "shippingserviceCodebuildProjectRoleDefaultPolicy25E9334B",
+        "Roles": [
+          {
+            "Ref": "shippingserviceCodebuildProjectRoleA150061F"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/shippingserviceCodebuildProject/Role/DefaultPolicy/Resource"
+      }
+    },
+    "shippingserviceCodebuildProjectD4D71638": {
+      "Type": "AWS::CodeBuild::Project",
+      "Properties": {
+        "Artifacts": {
+          "Type": "NO_ARTIFACTS"
+        },
+        "Environment": {
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "EnvironmentVariables": [
+            {
+              "Name": "CLUSTER_NAME",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Ref": "microserviceEksCluster5A133332"
+              }
+            },
+            {
+              "Name": "ECR_REPO_URI",
+              "Type": "PLAINTEXT",
+              "Value": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::Select": [
+                        4,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "shippingserviceECRRepository7AFC10B9",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".dkr.ecr.",
+                    {
+                      "Fn::Select": [
+                        3,
+                        {
+                          "Fn::Split": [
+                            ":",
+                            {
+                              "Fn::GetAtt": [
+                                "shippingserviceECRRepository7AFC10B9",
+                                "Arn"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    ".",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    },
+                    "/",
+                    {
+                      "Ref": "shippingserviceECRRepository7AFC10B9"
+                    }
+                  ]
+                ]
+              }
+            }
+          ],
+          "Image": "aws/codebuild/standard:3.0",
+          "PrivilegedMode": true,
+          "Type": "LINUX_CONTAINER"
+        },
+        "ServiceRole": {
+          "Fn::GetAtt": [
+            "shippingserviceCodebuildProjectRoleA150061F",
+            "Arn"
+          ]
+        },
+        "Source": {
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"pre_build\": {\n      \"commands\": [\n        \"env\",\n        \"export TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION}\",\n        \"wget -O /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubectl\",\n        \"chmod +x /usr/local/bin/kubectl\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"docker build -t $ECR_REPO_URI:$TAG .\",\n        \"docker build -t $ECR_REPO_URI:latest .\",\n        \"$(aws ecr get-login --no-include-email)\",\n        \"docker push $ECR_REPO_URI:$TAG\",\n        \"docker push $ECR_REPO_URI:latest\"\n      ]\n    },\n    \"post_build\": {\n      \"commands\": [\n        \"aws eks update-kubeconfig --name microservice --verbose\",\n        \"kubectl get no\",\n        \"sed s%IMAGE_TAG_PLACEHOLDER%$ECR_REPO_URI:$TAG% k8s/shippingservice.yaml | kubectl -n microservice apply -f - --record\"\n      ]\n    }\n  }\n}",
+          "Location": {
+            "Fn::GetAtt": [
+              "shippingserviceCodecommitRepository14194CA3",
+              "CloneUrlHttp"
+            ]
+          },
+          "Type": "CODECOMMIT"
+        },
+        "Name": "shippingservice-build"
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/shippingserviceCodebuildProject/Resource"
+      }
+    },
+    "shippingserviceOnCommitEventEventsRole1B3C4256": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/shippingserviceOnCommitEvent/EventsRole/Resource"
+      }
+    },
+    "shippingserviceOnCommitEventEventsRoleDefaultPolicy03F258AD": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "codebuild:StartBuild",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "shippingserviceCodebuildProjectD4D71638",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "shippingserviceOnCommitEventEventsRoleDefaultPolicy03F258AD",
+        "Roles": [
+          {
+            "Ref": "shippingserviceOnCommitEventEventsRole1B3C4256"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "MicroserviceCdkStack/shippingserviceOnCommitEvent/EventsRole/DefaultPolicy/Resource"
+      }
+    }
+  },
+  "Outputs": {
+    "microserviceEksClusterClusterName9DC062F7": {
+      "Value": {
+        "Ref": "microserviceEksCluster5A133332"
+      }
+    },
+    "microserviceEksClusterMastersRoleArnC827A490": {
+      "Value": {
+        "Fn::GetAtt": [
+          "AdminRole38563C57",
+          "Arn"
+        ]
+      }
+    },
+    "microserviceEksClusterConfigCommand22CB06EC": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "aws eks update-kubeconfig --name ",
+            {
+              "Ref": "microserviceEksCluster5A133332"
+            },
+            " --region ",
+            {
+              "Ref": "AWS::Region"
+            },
+            " --role-arn ",
+            {
+              "Fn::GetAtt": [
+                "AdminRole38563C57",
+                "Arn"
+              ]
+            }
+          ]
+        ]
+      }
+    },
+    "microserviceEksClusterGetTokenCommand8393BB97": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "aws eks get-token --cluster-name ",
+            {
+              "Ref": "microserviceEksCluster5A133332"
+            },
+            " --region ",
+            {
+              "Ref": "AWS::Region"
+            },
+            " --role-arn ",
+            {
+              "Fn::GetAtt": [
+                "AdminRole38563C57",
+                "Arn"
+              ]
+            }
+          ]
+        ]
+      }
+    }
+  },
+  "Parameters": {
+    "AssetParametersfcbdc6836e088c135f093165f26ac77f803a8c9d544b5fbb39e19f8e0d731796S3Bucket2C6BE99F": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"fcbdc6836e088c135f093165f26ac77f803a8c9d544b5fbb39e19f8e0d731796\""
+    },
+    "AssetParametersfcbdc6836e088c135f093165f26ac77f803a8c9d544b5fbb39e19f8e0d731796S3VersionKey4D7F7B64": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"fcbdc6836e088c135f093165f26ac77f803a8c9d544b5fbb39e19f8e0d731796\""
+    },
+    "AssetParametersfcbdc6836e088c135f093165f26ac77f803a8c9d544b5fbb39e19f8e0d731796ArtifactHash92C025A4": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"fcbdc6836e088c135f093165f26ac77f803a8c9d544b5fbb39e19f8e0d731796\""
+    },
+    "AssetParametersc82ab631133fcbacba75e34003554476abe4d086d477fe4dc9c98fb25a6e5affS3Bucket9266BA0E": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"c82ab631133fcbacba75e34003554476abe4d086d477fe4dc9c98fb25a6e5aff\""
+    },
+    "AssetParametersc82ab631133fcbacba75e34003554476abe4d086d477fe4dc9c98fb25a6e5affS3VersionKey5B5295A8": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"c82ab631133fcbacba75e34003554476abe4d086d477fe4dc9c98fb25a6e5aff\""
+    },
+    "AssetParametersc82ab631133fcbacba75e34003554476abe4d086d477fe4dc9c98fb25a6e5affArtifactHash3453F7BF": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"c82ab631133fcbacba75e34003554476abe4d086d477fe4dc9c98fb25a6e5aff\""
+    },
+    "AssetParameters2d65340a9414c04d1844e421bd328aa3b80015d6a02e74afe9a222168b2ba050S3Bucket0EAA682D": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"2d65340a9414c04d1844e421bd328aa3b80015d6a02e74afe9a222168b2ba050\""
+    },
+    "AssetParameters2d65340a9414c04d1844e421bd328aa3b80015d6a02e74afe9a222168b2ba050S3VersionKeyF3400812": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"2d65340a9414c04d1844e421bd328aa3b80015d6a02e74afe9a222168b2ba050\""
+    },
+    "AssetParameters2d65340a9414c04d1844e421bd328aa3b80015d6a02e74afe9a222168b2ba050ArtifactHashF4CEE19F": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"2d65340a9414c04d1844e421bd328aa3b80015d6a02e74afe9a222168b2ba050\""
+    },
+    "AssetParametersa3a94ed0273b96828da3a5bc3694cc96225be49ecd1386dd139c99c6fce45d9fS3BucketE9C1A5B1": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"a3a94ed0273b96828da3a5bc3694cc96225be49ecd1386dd139c99c6fce45d9f\""
+    },
+    "AssetParametersa3a94ed0273b96828da3a5bc3694cc96225be49ecd1386dd139c99c6fce45d9fS3VersionKey44FB602D": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"a3a94ed0273b96828da3a5bc3694cc96225be49ecd1386dd139c99c6fce45d9f\""
+    },
+    "AssetParametersa3a94ed0273b96828da3a5bc3694cc96225be49ecd1386dd139c99c6fce45d9fArtifactHash61E5F62D": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"a3a94ed0273b96828da3a5bc3694cc96225be49ecd1386dd139c99c6fce45d9f\""
+    },
+    "AssetParameters3472e0c3302883b2ac5a2ac425029378a72023018bb8bab8adfcebbdd4989440S3Bucket27900522": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"3472e0c3302883b2ac5a2ac425029378a72023018bb8bab8adfcebbdd4989440\""
+    },
+    "AssetParameters3472e0c3302883b2ac5a2ac425029378a72023018bb8bab8adfcebbdd4989440S3VersionKeyCE1440B8": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"3472e0c3302883b2ac5a2ac425029378a72023018bb8bab8adfcebbdd4989440\""
+    },
+    "AssetParameters3472e0c3302883b2ac5a2ac425029378a72023018bb8bab8adfcebbdd4989440ArtifactHash2F44AA58": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"3472e0c3302883b2ac5a2ac425029378a72023018bb8bab8adfcebbdd4989440\""
+    },
+    "SsmParameterValueawsserviceeksoptimizedami114amazonlinux2recommendedimageidC96584B6F00A464EAD1953AFF4B05118Parameter": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/aws/service/eks/optimized-ami/1.14/amazon-linux-2/recommended/image_id"
+    }
+  }
+}
