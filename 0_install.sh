@@ -28,7 +28,14 @@ curl -sL https://run.solo.io/gloo/install | sh
 sudo cp ~/.gloo/bin/glooctl /usr/local/bin
 
 # check
+echo "##### kubectl version check #####"
 kubectl version --short
+
+echo "##### eksctl version check #####"
 eksctl version
+
+echo "##### cdk version check #####"
 cdk version
+
+echo "##### glooctl version check #####"
 glooctl version
