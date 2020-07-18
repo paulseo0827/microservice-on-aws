@@ -25,4 +25,10 @@ npm install -g aws-cdk
 
 # install glooctl
 curl -sL https://run.solo.io/gloo/install | sh
-export PATH=$HOME/.gloo/bin:$PATH
+sudo cp ~/.gloo/bin/glooctl /usr/local/bin
+
+# check
+kubectl version --short
+eksctl version
+cdk version
+glooctl version
