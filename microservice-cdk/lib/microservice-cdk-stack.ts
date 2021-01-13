@@ -3,6 +3,11 @@ import ecr = require('@aws-cdk/aws-ecr');
 import cdk = require('@aws-cdk/core');
 import eks = require('@aws-cdk/aws-eks');
 import iam = require('@aws-cdk/aws-iam');
+import {
+	  AccountRootPrincipal,
+	    ManagedPolicy,
+	      Role,
+} from '@aws-cdk/aws-iam';
 import codebuild = require('@aws-cdk/aws-codebuild');
 import codecommit = require('@aws-cdk/aws-codecommit');
 import targets = require('@aws-cdk/aws-events-targets');
@@ -20,6 +25,9 @@ export class MicroserviceCdkStack extends cdk.Stack {
     const eksClusterAdmin = new iam.Role(this, 'AdminRole', {
       assumedBy: new iam.AccountRootPrincipal()
     });
+
+    eksClusterAdmin.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEKSClusterPolicy'));
+    eksClusterAdmin.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEKSServicePolicy'));
 
     const eksClusterName = 'microservice'
 
