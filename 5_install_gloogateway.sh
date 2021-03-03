@@ -8,4 +8,6 @@ glooctl add route \
             --prefix-rewrite / \
             --dest-name microservice-frontend-80
 
+sleep 5
+
 glooctl proxy url
