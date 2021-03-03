@@ -1,4 +1,4 @@
-FROM node:8-alpine as base
+FROM public.ecr.aws/t8y0p2b4/node:8-alpine as base
 
 FROM base as builder
 

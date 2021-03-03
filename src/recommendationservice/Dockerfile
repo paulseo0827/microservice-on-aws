@@ -1,4 +1,4 @@
-FROM python:2.7-slim
+FROM public.ecr.aws/t8y0p2b4/python:2.7-slim
 RUN apt-get update -qqy && \
 	apt-get -qqy install wget g++ && \
 	rm -rf /var/lib/apt/lists/*

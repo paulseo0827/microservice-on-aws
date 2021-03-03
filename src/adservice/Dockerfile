@@ -1,4 +1,4 @@
-FROM openjdk:8-slim as builder
+FROM public.ecr.aws/t8y0p2b4/openjdk:8-slim as builder
 
 WORKDIR /app
 
@@ -11,7 +11,7 @@ COPY . .
 RUN chmod +x gradlew
 RUN ./gradlew installDist
 
-FROM openjdk:8-slim
+FROM public.ecr.aws/t8y0p2b4/openjdk:8-slim
 
 # Download Stackdriver Profiler Java agent
 RUN apt-get -y update && apt-get install -qqy \

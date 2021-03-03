@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.1-sdk-alpine as builder
+FROM public.ecr.aws/t8y0p2b4/dotnet:2.1-sdk-alpine as builder
 WORKDIR /app
 COPY . .
 RUN dotnet restore && \
@@ -6,7 +6,7 @@ RUN dotnet restore && \
     dotnet publish -c release -r linux-musl-x64 -o /cartservice
 
 # cartservice
-FROM alpine:3.8
+FROM public.ecr.aws/t8y0p2b4/alpine:3.8
 
 RUN GRPC_HEALTH_PROBE_VERSION=v0.2.0 && \
     wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \

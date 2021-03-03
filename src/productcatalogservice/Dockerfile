@@ -1,4 +1,4 @@
-FROM golang:1.12-alpine AS builder
+FROM public.ecr.aws/t8y0p2b4/golang:1.12-alpine AS builder
 RUN apk add --no-cache ca-certificates git && \
       wget -qO/go/bin/dep https://github.com/golang/dep/releases/download/v0.5.0/dep-linux-amd64 && \
       chmod +x /go/bin/dep
@@ -13,7 +13,7 @@ RUN dep ensure --vendor-only -v
 COPY . .
 RUN go build -o /productcatalogservice .
 
-FROM alpine AS release
+FROM public.ecr.aws/t8y0p2b4/alpine:latest AS release
 RUN apk add --no-cache ca-certificates
 RUN GRPC_HEALTH_PROBE_VERSION=v0.2.0 && \
     wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \

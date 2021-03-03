@@ -1,4 +1,4 @@
-FROM python:3.7-slim as base
+FROM public.ecr.aws/t8y0p2b4/python:3.7-slim as base
 
 FROM base as builder
 
