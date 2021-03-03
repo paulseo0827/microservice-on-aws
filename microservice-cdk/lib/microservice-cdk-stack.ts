@@ -31,7 +31,7 @@ export class MicroserviceCdkStack extends cdk.Stack {
     eksClusterAdmin.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEKSServicePolicy'));
 
     const eksNodeRole = new iam.Role(this, 'NodeRole', {
-      assumedBy: new iam.AccountRootPrincipal(),
+      //assumedBy: new iam.AccountRootPrincipal(),
       assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com')
     });
 

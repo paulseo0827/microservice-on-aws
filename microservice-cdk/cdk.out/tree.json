@@ -727,6 +727,101 @@
               "version": "1.91.0"
             }
           },
+          "NodeRole": {
+            "id": "NodeRole",
+            "path": "MicroserviceCdkStack/NodeRole",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "MicroserviceCdkStack/NodeRole/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "ec2.",
+                                  {
+                                    "Ref": "AWS::URLSuffix"
+                                  }
+                                ]
+                              ]
+                            }
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "managedPolicyArns": [
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::aws:policy/AmazonEKSWorkerNodePolicy"
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::aws:policy/AmazonEKS_CNI_Policy"
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::aws:policy/CloudWatchAgentServerPolicy"
+                          ]
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.CfnRole",
+                  "version": "1.91.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-iam.Role",
+              "version": "1.91.0"
+            }
+          },
           "microserviceEksCluster": {
             "id": "microserviceEksCluster",
             "path": "MicroserviceCdkStack/microserviceEksCluster",
@@ -3703,106 +3798,6 @@
             },
             "constructInfo": {
               "fqn": "@aws-cdk/core.Construct",
-              "version": "1.91.0"
-            }
-          },
-          "NodeRole": {
-            "id": "NodeRole",
-            "path": "MicroserviceCdkStack/NodeRole",
-            "children": {
-              "Resource": {
-                "id": "Resource",
-                "path": "MicroserviceCdkStack/NodeRole/Resource",
-                "attributes": {
-                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
-                  "aws:cdk:cloudformation:props": {
-                    "assumeRolePolicyDocument": {
-                      "Statement": [
-                        {
-                          "Action": "sts:AssumeRole",
-                          "Effect": "Allow",
-                          "Principal": {
-                            "AWS": {
-                              "Fn::Join": [
-                                "",
-                                [
-                                  "arn:",
-                                  {
-                                    "Ref": "AWS::Partition"
-                                  },
-                                  ":iam::",
-                                  {
-                                    "Ref": "AWS::AccountId"
-                                  },
-                                  ":root"
-                                ]
-                              ]
-                            }
-                          }
-                        }
-                      ],
-                      "Version": "2012-10-17"
-                    },
-                    "managedPolicyArns": [
-                      {
-                        "Fn::Join": [
-                          "",
-                          [
-                            "arn:",
-                            {
-                              "Ref": "AWS::Partition"
-                            },
-                            ":iam::aws:policy/AmazonEKSWorkerNodePolicy"
-                          ]
-                        ]
-                      },
-                      {
-                        "Fn::Join": [
-                          "",
-                          [
-                            "arn:",
-                            {
-                              "Ref": "AWS::Partition"
-                            },
-                            ":iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-                          ]
-                        ]
-                      },
-                      {
-                        "Fn::Join": [
-                          "",
-                          [
-                            "arn:",
-                            {
-                              "Ref": "AWS::Partition"
-                            },
-                            ":iam::aws:policy/AmazonEKS_CNI_Policy"
-                          ]
-                        ]
-                      },
-                      {
-                        "Fn::Join": [
-                          "",
-                          [
-                            "arn:",
-                            {
-                              "Ref": "AWS::Partition"
-                            },
-                            ":iam::aws:policy/CloudWatchAgentServerPolicy"
-                          ]
-                        ]
-                      }
-                    ]
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "@aws-cdk/aws-iam.CfnRole",
-                  "version": "1.91.0"
-                }
-              }
-            },
-            "constructInfo": {
-              "fqn": "@aws-cdk/aws-iam.Role",
               "version": "1.91.0"
             }
           },
