@@ -41,41 +41,61 @@ export class MicroserviceCdkStack extends cdk.Stack {
       outputMastersRoleArn: true
     });
 
+
+
+/*
     cluster.addResource('namespace', {
+*/
+    cluster.addManifest('namespace', {	
       apiVersion: 'v1',
       kind: 'Namespace',
       metadata: { name: 'microservice' }
     })
 
-    const nodegroup1 = cluster.addCapacity('microservice-ng1', {
-      instanceType: ec2.InstanceType.of(ec2.InstanceClass.M5, ec2.InstanceSize.LARGE),
-      associatePublicIpAddress: false,
-      bootstrapEnabled: true,
-      desiredCapacity: 3,
-      minCapacity: 3,
-      maxCapacity: 10,
-      mapRole: true
+    const eksNodeRole = new iam.Role(this, 'NodeRole', {
+      assumedBy: new iam.AccountRootPrincipal()
     });
 
-    nodegroup1.addToRolePolicy(
+    eksNodeRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEKSWorkerNodePolicy'));
+    eksNodeRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryReadOnly'));
+    eksNodeRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEKS_CNI_Policy'));
+    eksNodeRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('CloudWatchAgentServerPolicy'));
+
+    const nodegroup1 = cluster.addNodegroupCapacity('microservice-ng1', {
+      instanceType: ec2.InstanceType.of(ec2.InstanceClass.M5, ec2.InstanceSize.LARGE),
+      //associatePublicIpAddress: false,
+      //bootstrapEnabled: true,
+      desiredSize: 3,
+      minSize: 3,
+      maxSize: 10,
+      nodeRole: eksNodeRole
+      //mapRole: true
+    });
+
+
+/*
+    nodegroup1.nodeRole.addToPolicy(
       new iam.PolicyStatement({ effect: iam.Effect.ALLOW,resources: ['*'],
       actions: ['appmesh:*','servicediscovery:CreateService','servicediscovery:GetService','servicediscovery:RegisterInstance','servicediscovery:DeregisterInstance','servicediscovery:ListInstances','servicediscovery:ListNamespaces','servicediscovery:ListServices','route53:GetHealthCheck','route53:CreateHealthCheck','route53:UpdateHealthCheck','route53:ChangeResourceRecordSets','route53:DeleteHealthCheck']})
     );
 
-    nodegroup1.addToRolePolicy(
+    nodegroup1.addToPolicy(
       new iam.PolicyStatement({ effect: iam.Effect.ALLOW,resources: ['*'],
       actions: ['autoscaling:DescribeAutoScalingGroups','autoscaling:DescribeAutoScalingInstances','autoscaling:DescribeLaunchConfigurations','autoscaling:DescribeTags','autoscaling:SetDesiredCapacity','autoscaling:TerminateInstanceInAutoScalingGroup','ec2:DescribeLaunchTemplateVersions']})
     );
 
-    nodegroup1.addToRolePolicy(
+    nodegroup1.addToPolicy(
       new iam.PolicyStatement({ effect: iam.Effect.ALLOW,resources: ['*'],
       actions: ['cloudwatch:PutMetricData','ec2:DescribeVolumes','ec2:DescribeTags','logs:PutLogEvents','logs:DescribeLogStreams','logs:DescribeLogGroups','logs:CreateLogStream','logs:CreateLogGroup']})
     );
 
-    nodegroup1.addToRolePolicy(
+    nodegroup1.addToPolicy(
       new iam.PolicyStatement({ effect: iam.Effect.ALLOW,resources: ['arn:aws:ssm:*:*:parameter/AmazonCloudWatch-*'],
       actions: ['ssm:GetParameter']})
     );
+*/
+
+
 
 /*
     nodegroup1.addToRolePolicy(
