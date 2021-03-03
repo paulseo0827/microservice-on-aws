@@ -22,12 +22,24 @@ export class MicroserviceCdkStack extends cdk.Stack {
       natGateways: 1
     })
 
+
     const eksClusterAdmin = new iam.Role(this, 'AdminRole', {
       assumedBy: new iam.AccountRootPrincipal()
     });
 
     eksClusterAdmin.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEKSClusterPolicy'));
     eksClusterAdmin.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEKSServicePolicy'));
+
+    const eksNodeRole = new iam.Role(this, 'NodeRole', {
+      assumedBy: new iam.AccountRootPrincipal(),
+      assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com')
+    });
+
+    eksNodeRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEKSWorkerNodePolicy'));
+    eksNodeRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryReadOnly'));
+    eksNodeRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEKS_CNI_Policy'));
+    eksNodeRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('CloudWatchAgentServerPolicy'));
+
 
     const eksClusterName = 'microservice'
 
@@ -42,24 +54,12 @@ export class MicroserviceCdkStack extends cdk.Stack {
     });
 
 
-
-/*
-    cluster.addResource('namespace', {
-*/
     cluster.addManifest('namespace', {	
       apiVersion: 'v1',
       kind: 'Namespace',
       metadata: { name: 'microservice' }
     })
 
-    const eksNodeRole = new iam.Role(this, 'NodeRole', {
-      assumedBy: new iam.AccountRootPrincipal()
-    });
-
-    eksNodeRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEKSWorkerNodePolicy'));
-    eksNodeRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryReadOnly'));
-    eksNodeRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEKS_CNI_Policy'));
-    eksNodeRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('CloudWatchAgentServerPolicy'));
 
     const nodegroup1 = cluster.addNodegroupCapacity('microservice-ng1', {
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.M5, ec2.InstanceSize.LARGE),
@@ -72,37 +72,6 @@ export class MicroserviceCdkStack extends cdk.Stack {
       //mapRole: true
     });
 
-
-/*
-    nodegroup1.nodeRole.addToPolicy(
-      new iam.PolicyStatement({ effect: iam.Effect.ALLOW,resources: ['*'],
-      actions: ['appmesh:*','servicediscovery:CreateService','servicediscovery:GetService','servicediscovery:RegisterInstance','servicediscovery:DeregisterInstance','servicediscovery:ListInstances','servicediscovery:ListNamespaces','servicediscovery:ListServices','route53:GetHealthCheck','route53:CreateHealthCheck','route53:UpdateHealthCheck','route53:ChangeResourceRecordSets','route53:DeleteHealthCheck']})
-    );
-
-    nodegroup1.addToPolicy(
-      new iam.PolicyStatement({ effect: iam.Effect.ALLOW,resources: ['*'],
-      actions: ['autoscaling:DescribeAutoScalingGroups','autoscaling:DescribeAutoScalingInstances','autoscaling:DescribeLaunchConfigurations','autoscaling:DescribeTags','autoscaling:SetDesiredCapacity','autoscaling:TerminateInstanceInAutoScalingGroup','ec2:DescribeLaunchTemplateVersions']})
-    );
-
-    nodegroup1.addToPolicy(
-      new iam.PolicyStatement({ effect: iam.Effect.ALLOW,resources: ['*'],
-      actions: ['cloudwatch:PutMetricData','ec2:DescribeVolumes','ec2:DescribeTags','logs:PutLogEvents','logs:DescribeLogStreams','logs:DescribeLogGroups','logs:CreateLogStream','logs:CreateLogGroup']})
-    );
-
-    nodegroup1.addToPolicy(
-      new iam.PolicyStatement({ effect: iam.Effect.ALLOW,resources: ['arn:aws:ssm:*:*:parameter/AmazonCloudWatch-*'],
-      actions: ['ssm:GetParameter']})
-    );
-*/
-
-
-
-/*
-    nodegroup1.addToRolePolicy(
-      new iam.PolicyStatement({ effect: iam.Effect.ALLOW,resources: ['*'],
-      actions: ['xray:PutTraceSegments','xray:PutTelemetryRecords','xray:GetSamplingRules','xray:GetSamplingTargets','xray:GetSamplingStatisticSummaries']})
-    );
-*/
 
     var applicationList:string[];
     applicationList = ['adservice','cartservice','checkoutservice','currencyservice',
