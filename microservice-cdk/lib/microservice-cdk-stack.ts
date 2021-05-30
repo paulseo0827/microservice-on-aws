@@ -46,7 +46,7 @@ export class MicroserviceCdkStack extends cdk.Stack {
     const cluster = new eks.Cluster(this, 'microserviceEksCluster', {
       vpc,
       clusterName: `${eksClusterName}`,
-      version: eks.KubernetesVersion.V1_16,
+      version: eks.KubernetesVersion.V1_19,
       defaultCapacity: 0,
       mastersRole: eksClusterAdmin,
       outputClusterName: true,
